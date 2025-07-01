@@ -2,11 +2,11 @@
 
 A beautiful, modern frontend layer for Wazuh and other SIEM integrations built with Next.js, React, and TypeScript.
 
-## 🚀 Features
+## Features
 
 This SIEM dashboard includes all the components from your requirements:
 
-### 📊 Dashboard "At a Glance"
+### Dashboard "At a Glance"
 - **Purpose**: Executives need instant health check
 - **Features**: 
   - Total alerts (all-time) & last 24h
@@ -14,7 +14,7 @@ This SIEM dashboard includes all the components from your requirements:
   - System health indicators
   - Real-time metrics
 
-### 🚨 Live Alerts Table
+### Live Alerts Table
 - **Purpose**: Ops/SecOps wants to spot anything burning
 - **Features**:
   - Last 100 alerts with auto-refresh
@@ -22,7 +22,7 @@ This SIEM dashboard includes all the components from your requirements:
   - Row actions: Create Ticket (if none exists)
   - Real-time updates every 30 seconds
 
-### 🎫 Ticket Pane
+### Ticket Pane
 - **Purpose**: Traceability & accountability
 - **Features**:
   - Ticket list with status chips (Open/In Progress/Closed)
@@ -30,7 +30,7 @@ This SIEM dashboard includes all the components from your requirements:
   - "Close ticket" button functionality
   - Assignment and due date tracking
 
-### 📋 Scheduled PDF Reports
+### Scheduled PDF Reports
 - **Purpose**: Stakeholders love e-mail summaries
 - **Features**:
   - Toggle weekly PDF digest (alert counts, top hosts, SLA metrics) per tenant
@@ -38,7 +38,7 @@ This SIEM dashboard includes all the components from your requirements:
   - Email distribution lists
   - Custom report templates
 
-### 🛡️ Compliance Snapshot
+### Compliance Snapshot
 - **Purpose**: Auditors ask "Are we ISO 27001 OK?"
 - **Features**:
   - Card showing % of mapped Wazuh rules triggered per control family
@@ -46,7 +46,7 @@ This SIEM dashboard includes all the components from your requirements:
   - Multiple framework support (ISO 27001, SOC 2, PCI-DSS, HIPAA, GDPR)
   - Compliance status tracking
 
-### 👥 User & Role Admin
+### User & Role Admin
 - **Purpose**: Least-privilege self-service
 - **Features**:
   - Invite users and assign roles (Admin/Analyst/Viewer)
@@ -54,7 +54,7 @@ This SIEM dashboard includes all the components from your requirements:
   - User activity tracking
   - Account management
 
-### 🎨 Branding & Theming
+### Branding & Theming
 - **Purpose**: White-label requirement
 - **Features**:
   - Customer logo upload
@@ -63,7 +63,7 @@ This SIEM dashboard includes all the components from your requirements:
   - Custom color schemes
   - Company information customization
 
-### 🔐 SSO & MFA
+### SSO & MFA
 - **Purpose**: Frictionless yet secure login
 - **Features**:
   - SAML/OIDC with client's IdP
@@ -71,7 +71,7 @@ This SIEM dashboard includes all the components from your requirements:
   - Session management
   - Active session monitoring
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 14 with App Router
 - **Language**: TypeScript
@@ -82,7 +82,7 @@ This SIEM dashboard includes all the components from your requirements:
 - **Theme**: Custom dark/light mode support
 - **Notifications**: React Hot Toast
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -103,15 +103,15 @@ This SIEM dashboard includes all the components from your requirements:
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📱 Responsive Design
+## Responsive Design
 
 The dashboard is fully responsive and works beautifully on:
-- 🖥️ Desktop computers
-- 💻 Laptops
-- 📱 Tablets
-- 📱 Mobile devices
+- Desktop computers
+- Laptops
+- Tablets
+- Mobile devices
 
-## 🎯 Key Components
+## Key Components
 
 ### Navigation
 - **Sidebar**: Fixed navigation with system status indicators
@@ -135,7 +135,7 @@ The dashboard is fully responsive and works beautifully on:
 - **Animations**: Smooth transitions and micro-interactions
 - **Accessibility**: WCAG compliant design
 
-## 🔌 Integration Ready
+## Integration Ready
 
 This frontend is designed to integrate with:
 - **Wazuh**: Security monitoring and alerting
@@ -145,7 +145,7 @@ This frontend is designed to integrate with:
 - **Identity Providers**: SAML, OIDC, OAuth
 - **Email Services**: Report distribution
 
-## 🎨 Customization
+## Customization
 
 The dashboard supports extensive customization:
 - **Branding**: Upload custom logos and set company information
@@ -153,7 +153,7 @@ The dashboard supports extensive customization:
 - **Content**: Customize dashboard titles, footer text, and labels
 - **Features**: Enable/disable specific functionality based on requirements
 
-## 📊 Mock Data
+## Mock Data
 
 The current implementation uses realistic mock data to demonstrate functionality:
 - Sample security alerts with various severities
@@ -162,7 +162,7 @@ The current implementation uses realistic mock data to demonstrate functionality
 - User accounts with different roles
 - Report templates and schedules
 
-## 🔄 Next Steps
+## Next Steps
 
 To make this production-ready:
 1. **API Integration**: Connect to real Wazuh and other backend services
@@ -172,10 +172,10 @@ To make this production-ready:
 5. **Testing**: Add comprehensive test coverage
 6. **Deployment**: Set up CI/CD pipeline and hosting
 
-## 📝 License
+## License
 
 This project is part of the Codec Networks SIEM solution.
 
 ---
 
-**Built with ❤️ for modern security operations centers** 
+**Built with love for modern security operations centers** 
