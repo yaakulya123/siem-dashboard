@@ -11,14 +11,12 @@ import {
   ShieldCheckIcon,
   UsersIcon,
   Cog6ToothIcon,
-  GlobeAltIcon,
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
   { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
-  { name: 'Global Threats', href: '/threats', icon: GlobeAltIcon, badge: 5 },
   { name: 'Tickets', href: '/tickets', icon: TicketIcon, badge: 3 },
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
