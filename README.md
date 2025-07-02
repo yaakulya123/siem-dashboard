@@ -157,7 +157,7 @@ The current implementation uses realistic mock data to demonstrate functionality
 
 To make this production-ready:
 1. **API Integration**: Connect to real Wazuh and other backend services
-2. **Authentication**: Implement actual SSO/MFA integration
+2. **Authentication**: Implement user authentication system
 3. **Database**: Set up persistent storage for configurations
 4. **Real-time Updates**: Implement WebSocket connections for live updates
 5. **Testing**: Add comprehensive test coverage
