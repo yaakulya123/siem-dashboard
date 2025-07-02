@@ -94,6 +94,17 @@
   }
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Severity badges */
 .severity-critical {
   @apply bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400;
