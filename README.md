@@ -1,6 +1,6 @@
-# Modern SIEM Dashboard
+# Modern SIEM Dashboard – Client Interface
 
-A beautiful, modern frontend layer for Wazuh and other SIEM integrations built with Next.js, React, and TypeScript.
+A beautiful, modern **client (frontend) interface** for Wazuh and other SIEM integrations, built with Next.js, React, and TypeScript. This repository contains only the frontend layer for interacting with SIEM data and services.
 
 ## Features
 
