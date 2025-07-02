@@ -10,7 +10,6 @@ import {
   DocumentChartBarIcon,
   ShieldCheckIcon,
   UsersIcon,
-  KeyIcon,
   Cog6ToothIcon,
   GlobeAltIcon,
 } from '@heroicons/react/24/outline'
@@ -24,7 +23,6 @@ const navigation = [
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
   { name: 'Users & Roles', href: '/users', icon: UsersIcon, badge: null },
-  { name: 'SSO & MFA', href: '/auth', icon: KeyIcon, badge: null },
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, badge: null },
 ]
 
