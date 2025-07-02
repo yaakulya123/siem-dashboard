@@ -63,14 +63,6 @@ This SIEM dashboard includes all the components from your requirements:
   - Custom color schemes
   - Company information customization
 
-### SSO & MFA
-- **Purpose**: Frictionless yet secure login
-- **Features**:
-  - SAML/OIDC with client's IdP
-  - Optional TOTP MFA fallback
-  - Session management
-  - Active session monitoring
-
 ## Tech Stack
 
 - **Framework**: Next.js 14 with App Router
@@ -126,7 +118,6 @@ The dashboard is fully responsive and works beautifully on:
 5. **Compliance** (`/compliance`) - Framework compliance tracking
 6. **Users** (`/users`) - User and role administration
 7. **Branding** (`/branding`) - White-label customization
-8. **SSO & MFA** (`/auth`) - Authentication configuration
 
 ### Design System
 - **Colors**: Custom severity-based color palette
