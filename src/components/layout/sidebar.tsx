@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import {
   HomeIcon,
   ExclamationTriangleIcon,
-  TicketIcon,
   DocumentChartBarIcon,
   ShieldCheckIcon,
   UsersIcon,
@@ -17,7 +16,6 @@ import { clsx } from 'clsx'
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
   { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
-  { name: 'Tickets', href: '/tickets', icon: TicketIcon, badge: 3 },
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
   { name: 'Users & Roles', href: '/users', icon: UsersIcon, badge: null },
