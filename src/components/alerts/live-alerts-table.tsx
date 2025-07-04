@@ -70,21 +70,21 @@ const mockAlerts: Alert[] = [
 
 const getSeverityColor = (severity: string) => {
   switch (severity) {
-    case 'critical': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-    case 'high': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400'
-    case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-    case 'low': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
-    case 'info': return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
-    default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+    case 'critical': return 'severity-critical'
+    case 'high': return 'severity-high'
+    case 'medium': return 'severity-medium'
+    case 'low': return 'severity-low'
+    case 'info': return 'severity-info'
+    default: return 'severity-info'
   }
 }
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'open': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-    case 'investigating': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-    case 'resolved': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-    default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+    case 'open': return 'severity-critical'
+    case 'investigating': return 'severity-medium'
+    case 'resolved': return 'severity-low'
+    default: return 'severity-info'
   }
 }
 
@@ -108,57 +108,50 @@ export function LiveAlertsTable() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Live Alerts
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Real-time security events • Last updated: {lastRefresh.toLocaleTimeString()}
-            </p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-green-600 dark:text-green-400">Auto-refresh</span>
-          </div>
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="status-dot active"></div>
+          <span className="text-sm font-medium text-green-600 dark:text-green-400">Live monitoring</span>
+        </div>
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          Last updated: {lastRefresh.toLocaleTimeString()}
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+      <div className="overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-md">
+        <table className="min-w-full divide-y divide-gray-200/70 dark:divide-gray-700/30">
+          <thead className="bg-gray-50/80 dark:bg-gray-900/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Severity
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Alert
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Time
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Host/Agent
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Rule
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-200/70 dark:divide-gray-700/30">
             {alerts.map((alert) => (
-              <tr key={alert.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr key={alert.id} className="hover:bg-gray-50/80 dark:hover:bg-gray-700/50 transition-colors duration-150">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={clsx(
-                    'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize',
+                    'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium capitalize',
                     getSeverityColor(alert.severity)
                   )}>
                     {alert.severity}
@@ -168,26 +161,26 @@ export function LiveAlertsTable() {
                   <div className="text-sm text-gray-900 dark:text-white font-medium">
                     {alert.title}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                     ID: {alert.id}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center">
-                    <ClockIcon className="w-4 h-4 mr-1" />
+                    <ClockIcon className="w-4 h-4 mr-1.5 text-gray-400" />
                     {alert.timestamp}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  <div>{alert.host}</div>
-                  <div className="text-xs text-gray-400">{alert.agent}</div>
+                  <div className="font-medium">{alert.host}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{alert.agent}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   {alert.rule}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={clsx(
-                    'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize',
+                    'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium capitalize',
                     getStatusColor(alert.status)
                   )}>
                     {alert.status}
@@ -197,9 +190,9 @@ export function LiveAlertsTable() {
                   {alert.status === 'open' && (
                     <button
                       onClick={() => createTicket(alert.id)}
-                      className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40"
+                      className="inline-flex items-center px-3 py-1.5 border border-blue-200 dark:border-blue-800/50 text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 transition-colors duration-150 shadow-sm"
                     >
-                      <UserIcon className="w-3 h-3 mr-1" />
+                      <UserIcon className="w-3.5 h-3.5 mr-1.5" />
                       Create Ticket
                     </button>
                   )}

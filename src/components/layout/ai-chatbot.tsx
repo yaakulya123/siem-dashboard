@@ -6,6 +6,7 @@ import {
   XMarkIcon, 
   PaperAirplaneIcon,
   CpuChipIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 interface Message {
@@ -122,13 +123,13 @@ export function AIChatbot() {
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 group"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 group animate-float"
           >
             <div className="relative">
               <ChatBubbleLeftRightIcon className="h-6 w-6" />
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
             </div>
-            <span className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white text-sm px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            <span className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-900/90 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md border border-gray-800/50">
               AI Security Assistant
             </span>
           </button>
@@ -136,24 +137,24 @@ export function AIChatbot() {
 
         {/* Chat Window */}
         {isOpen && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 w-96 h-[500px] flex flex-col">
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-xl shadow-2xl border border-gray-200/70 dark:border-gray-700/50 w-96 h-[500px] flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-xl flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                  <CpuChipIcon className="h-5 w-5" />
+                <div className="w-9 h-9 bg-blue-500/70 backdrop-blur-sm rounded-full flex items-center justify-center shadow-inner animate-pulse-slow">
+                  <SparklesIcon className="h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="font-semibold">AI Security Assistant</h3>
                   <div className="flex items-center text-xs opacity-90">
-                    <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                    Online
+                    <div className="status-dot active"></div>
+                    <span className="ml-1.5">Active & Learning</span>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-white/80 hover:text-white p-1"
+                className="text-white/80 hover:text-white p-1 rounded-full hover:bg-blue-500/30 transition-colors"
               >
                 <XMarkIcon className="h-5 w-5" />
               </button>
@@ -162,48 +163,57 @@ export function AIChatbot() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
-                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
                   <div className={`max-w-[85%] ${
                     message.type === 'user'
-                      ? 'bg-blue-600 text-white rounded-l-lg rounded-tr-lg'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'
-                  } p-3 text-sm`}>
+                      ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl rounded-tr-sm shadow-md'
+                      : 'bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-gray-900 dark:text-white rounded-2xl rounded-tl-sm shadow-md border border-gray-100/50 dark:border-gray-600/30'
+                  } p-3.5 text-sm`}>
                     {message.type === 'ai' && (
                       <div className="flex items-center mb-2">
-                        <CpuChipIcon className="h-4 w-4 mr-2 text-blue-500" />
-                        <span className="text-xs font-medium text-blue-500">AI Assistant</span>
+                        <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mr-2">
+                          <CpuChipIcon className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400">AI Assistant</span>
                       </div>
                     )}
                     <p className="whitespace-pre-wrap">{message.content}</p>
                     {message.suggestions && (
-                      <div className="mt-3 space-y-1">
+                      <div className="mt-3 space-y-1.5">
                         <p className="text-xs font-medium opacity-70">Quick actions:</p>
                         {message.suggestions.map((suggestion, index) => (
                           <button
                             key={index}
                             onClick={() => handleSuggestionClick(suggestion)}
-                            className="block w-full text-left text-xs bg-white/10 dark:bg-gray-600/50 hover:bg-white/20 dark:hover:bg-gray-600/70 rounded px-2 py-1 transition-colors"
+                            className="block w-full text-left text-xs bg-blue-50/50 dark:bg-gray-600/50 hover:bg-blue-100/50 dark:hover:bg-gray-600/70 rounded-lg px-3 py-1.5 transition-colors border border-blue-100/50 dark:border-gray-500/30"
                           >
                             {suggestion}
                           </button>
                         ))}
                       </div>
                     )}
+                    <div className="mt-1.5 text-right">
+                      <span className="text-[10px] opacity-50">
+                        {message.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
 
               {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-100 dark:bg-gray-700 rounded-r-lg rounded-tl-lg p-3 text-sm">
+                <div className="flex justify-start animate-fade-in">
+                  <div className="bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm rounded-2xl rounded-tl-sm p-3.5 text-sm shadow-md border border-gray-100/50 dark:border-gray-600/30">
                     <div className="flex items-center mb-2">
-                      <CpuChipIcon className="h-4 w-4 mr-2 text-blue-500" />
-                      <span className="text-xs font-medium text-blue-500">AI Assistant</span>
+                      <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mr-2">
+                        <CpuChipIcon className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <span className="text-xs font-medium text-blue-600 dark:text-blue-400">AI Assistant</span>
                     </div>
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="flex space-x-1.5 px-1">
+                      <div className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -213,7 +223,7 @@ export function AIChatbot() {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-t border-gray-200/70 dark:border-gray-700/50 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <div className="flex space-x-2">
                 <input
                   ref={inputRef}
@@ -222,13 +232,13 @@ export function AIChatbot() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about security threats, alerts, or compliance..."
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
+                  className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700/80 dark:text-white text-sm backdrop-blur-sm"
                   disabled={isTyping}
                 />
                 <button
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isTyping}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white p-2 rounded-md transition-colors"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white p-2.5 rounded-xl transition-all duration-200 shadow-sm"
                 >
                   <PaperAirplaneIcon className="h-4 w-4" />
                 </button>

@@ -9,12 +9,12 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 flex flex-col">
       <Sidebar />
       <div className="lg:pl-72 flex flex-col min-h-screen">
         <Header />
-        <main className="py-10 flex-1">
-          <div className="px-4 sm:px-6 lg:px-8">
+        <main className="py-8 flex-1 animate-fade-in">
+          <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             {children}
           </div>
         </main>

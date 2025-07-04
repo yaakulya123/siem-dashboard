@@ -152,22 +152,22 @@ export function AttackMap() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
-          <GlobeAltIcon className="h-5 w-5 text-blue-600 mr-2" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Global Threat Map
-          </h3>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm">
+            <GlobeAltIcon className="h-5 w-5 text-white" />
+          </div>
+          <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">Live monitoring active</span>
         </div>
-        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-          Live monitoring active
+        <div className="flex items-center space-x-2">
+          <div className="status-dot active"></div>
+          <span className="text-sm text-green-600 dark:text-green-400">Real-time updates</span>
         </div>
       </div>
 
       <div className="relative">
-        <div className="relative w-full h-96 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+        <div className="relative w-full h-[450px] rounded-xl overflow-hidden border border-gray-200/70 dark:border-gray-700/40 shadow-md">
           {/* World Map Background Image */}
           <img
             src="/vector-world-map.jpg"
@@ -206,7 +206,7 @@ export function AttackMap() {
                   />
                   
                   <circle
-                    r="4"
+                    r="5"
                     fill={severityColors[attack.severity]}
                     opacity="0.9"
                     className="drop-shadow-md"
@@ -249,7 +249,7 @@ export function AttackMap() {
                       fill="none"
                       stroke={isSource ? "#dc2626" : "#2563eb"}
                       strokeWidth="2"
-                      opacity="0.5"
+                      strokeOpacity="0.5"
                       className="animate-ping"
                     />
                   )}
@@ -257,65 +257,66 @@ export function AttackMap() {
               );
             })}
           </svg>
-        </div>
 
-        {/* Tooltip */}
-        {hoveredAttack && (
-          <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border max-w-xs z-10">
-            <div className="flex items-center mb-2">
-              <ExclamationTriangleIcon 
-                className={`h-4 w-4 mr-2 ${
-                  hoveredAttack.severity === 'critical' ? 'text-red-500' :
-                  hoveredAttack.severity === 'high' ? 'text-orange-500' :
-                  hoveredAttack.severity === 'medium' ? 'text-yellow-500' :
-                  'text-blue-500'
-                }`}
-              />
-              <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                hoveredAttack.severity === 'critical' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                hoveredAttack.severity === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
-                hoveredAttack.severity === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-              }`}>
-                {hoveredAttack.severity.toUpperCase()}
-              </span>
+          {/* Hover tooltip */}
+          {hoveredAttack && (
+            <div
+              className="absolute bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10 text-sm max-w-xs"
+              style={{
+                left: `${(hoveredAttack.sourceCoords[0] + hoveredAttack.targetCoords[0]) / 2}px`,
+                top: `${(hoveredAttack.sourceCoords[1] + hoveredAttack.targetCoords[1]) / 2}px`,
+                transform: 'translate(-50%, -130%)',
+              }}
+            >
+              <div className="flex items-center space-x-1.5 mb-1">
+                <ExclamationTriangleIcon
+                  className="h-4 w-4"
+                  style={{ color: severityColors[hoveredAttack.severity] }}
+                />
+                <span className="font-medium text-gray-900 dark:text-white capitalize">
+                  {hoveredAttack.severity} {hoveredAttack.attackType}
+                </span>
+              </div>
+              <div className="text-gray-600 dark:text-gray-300 text-xs">
+                <div className="mb-1">
+                  <span className="font-medium">From:</span> {hoveredAttack.sourceCountry}
+                </div>
+                <div className="mb-1">
+                  <span className="font-medium">To:</span> {hoveredAttack.targetCountry}
+                </div>
+                <div>
+                  <span className="font-medium">Time:</span>{' '}
+                  {hoveredAttack.timestamp.toLocaleTimeString()}
+                </div>
+              </div>
             </div>
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {hoveredAttack.attackType}
-            </p>
-            <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
-              {hoveredAttack.sourceCountry} → {hoveredAttack.targetCountry}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {hoveredAttack.timestamp.toLocaleTimeString()}
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Legend */}
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center text-xs">
-            <div className="w-3 h-3 bg-red-600 rounded-full mr-2"></div>
-            <span className="text-gray-600 dark:text-gray-300">Critical</span>
-          </div>
-          <div className="flex items-center text-xs">
-            <div className="w-3 h-3 bg-orange-600 rounded-full mr-2"></div>
-            <span className="text-gray-600 dark:text-gray-300">High</span>
-          </div>
-          <div className="flex items-center text-xs">
-            <div className="w-3 h-3 bg-yellow-600 rounded-full mr-2"></div>
-            <span className="text-gray-600 dark:text-gray-300">Medium</span>
-          </div>
-          <div className="flex items-center text-xs">
-            <div className="w-3 h-3 bg-blue-600 rounded-full mr-2"></div>
-            <span className="text-gray-600 dark:text-gray-300">Low</span>
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-100 dark:border-gray-700/30 shadow-sm">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Active Attacks</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">{attacks.length}</div>
+        </div>
+        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-100 dark:border-gray-700/30 shadow-sm">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Critical Threats</div>
+          <div className="text-lg font-bold text-red-600 dark:text-red-400">
+            {attacks.filter(a => a.severity === 'critical').length}
           </div>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          {attacks.length} active threats detected
-        </p>
+        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-100 dark:border-gray-700/30 shadow-sm">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Source Countries</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">
+            {new Set(attacks.map(a => a.sourceCode)).size}
+          </div>
+        </div>
+        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-100 dark:border-gray-700/30 shadow-sm">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Target Countries</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">
+            {new Set(attacks.map(a => a.targetCode)).size}
+          </div>
+        </div>
       </div>
     </div>
   );
