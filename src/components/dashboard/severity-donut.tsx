@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 const data = [
@@ -36,6 +37,15 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 export function SeverityDonut() {
   const total = data.reduce((sum, item) => sum + item.value, 0)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index)
+  }
+
+  const onPieLeave = () => {
+    setActiveIndex(null)
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -54,6 +64,22 @@ export function SeverityDonut() {
         <div className="flex-1 relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
+              <defs>
+                {data.map((entry, index) => (
+                  <radialGradient 
+                    key={`gradient-${index}`} 
+                    id={`gradient-${index}`} 
+                    cx="50%" 
+                    cy="50%" 
+                    r="50%" 
+                    fx="50%" 
+                    fy="50%"
+                  >
+                    <stop offset="0%" stopColor={entry.color} stopOpacity={0.9} />
+                    <stop offset="100%" stopColor={entry.color} stopOpacity={0.6} />
+                  </radialGradient>
+                ))}
+              </defs>
               <Pie
                 data={data}
                 cx="50%"
@@ -66,13 +92,21 @@ export function SeverityDonut() {
                 animationBegin={0}
                 animationDuration={1200}
                 animationEasing="ease-out"
+                onMouseEnter={onPieEnter}
+                onMouseLeave={onPieLeave}
               >
                 {data.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
-                    fill={entry.color}
+                    fill={`url(#gradient-${index})`}
                     stroke="rgba(0,0,0,0.3)"
                     strokeWidth={1}
+                    style={{
+                      filter: activeIndex === index ? 'drop-shadow(0 0 6px rgba(255,255,255,0.3))' : 'none',
+                      transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
+                      transformOrigin: 'center',
+                      transition: 'transform 0.2s, filter 0.2s'
+                    }}
                   />
                 ))}
               </Pie>
@@ -82,7 +116,7 @@ export function SeverityDonut() {
           
           {/* Center text */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="text-center">
+            <div className="text-center bg-gray-900/60 backdrop-blur-sm rounded-full w-28 h-28 flex flex-col items-center justify-center border border-gray-700/30 shadow-lg">
               <div className="text-3xl font-bold text-white">
                 {total}
               </div>
@@ -95,15 +129,30 @@ export function SeverityDonut() {
         
         {/* Legend */}
         <div className="mt-4 space-y-1">
-          {data.map((item) => (
-            <div key={item.name} className="flex items-center justify-between py-2">
+          {data.map((item, index) => (
+            <div 
+              key={item.name} 
+              className="flex items-center justify-between py-2 px-2 rounded-md transition-colors duration-200 hover:bg-gray-800/50"
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(null)}
+            >
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-sm text-gray-300">{item.name}</span>
+                <div 
+                  className="w-3 h-3 rounded-full" 
+                  style={{ 
+                    backgroundColor: item.color,
+                    boxShadow: activeIndex === index ? `0 0 8px ${item.color}` : 'none'
+                  }} 
+                />
+                <span className={`text-sm ${activeIndex === index ? 'text-white' : 'text-gray-300'}`}>
+                  {item.name}
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-gray-400">{item.percentage}%</span>
-                <span className="text-sm font-medium text-white">{item.value}</span>
+                <span className={`text-sm font-medium px-2 py-0.5 rounded-full ${activeIndex === index ? 'bg-gray-700' : 'bg-gray-800/50'}`}>
+                  {item.value}
+                </span>
               </div>
             </div>
           ))}
