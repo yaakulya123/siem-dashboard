@@ -6,6 +6,9 @@ Version 2:
 Version 1:
 ![image](https://github.com/user-attachments/assets/3e9d7bcc-3e46-4955-8892-bf1005ccf5e1)
 
+![image](https://github.com/user-attachments/assets/5ce83182-83e8-489b-8088-7290b4c527f4)
+
+
 
 A beautiful, modern **SOC-as-a-Service platform** with separate interfaces for clients and SOC managers. Built with Next.js, React, and TypeScript, this solution provides a white-labeled frontend for Wazuh SIEM without exposing the underlying technology to clients.
 
