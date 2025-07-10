@@ -1,7 +1,9 @@
 # SOC-as-a-Service Dashboard
 
 Version 2: 
+![image](https://github.com/user-attachments/assets/6c58a4fb-77b1-4d83-895d-99421d83b6c3)
 
+![image](https://github.com/user-attachments/assets/a6544b7f-a7ad-4cd3-bbd7-f046f3b16c3a)
 
 Version 1:
 ![image](https://github.com/user-attachments/assets/3e9d7bcc-3e46-4955-8892-bf1005ccf5e1)
