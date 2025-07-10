@@ -2,10 +2,8 @@
 
 import { 
   ExclamationTriangleIcon, 
-  TicketIcon, 
   ClockIcon, 
   ShieldCheckIcon,
-  ChartBarIcon,
   ServerIcon
 } from '@heroicons/react/24/outline'
 
@@ -28,30 +26,6 @@ const stats = [
     change: '-8%', 
     changeType: 'decrease',
     icon: ClockIcon,
-    color: 'text-green-600 dark:text-green-400',
-    bgColor: 'bg-green-100 dark:bg-green-900/30',
-    gradientFrom: 'from-green-50 dark:from-green-900/20',
-    gradientTo: 'to-green-100/50 dark:to-green-800/10',
-    borderColor: 'border-green-200/50 dark:border-green-800/30'
-  },
-  { 
-    name: 'Critical Alerts', 
-    value: '3', 
-    change: '+2', 
-    changeType: 'increase',
-    icon: ExclamationTriangleIcon,
-    color: 'text-red-600 dark:text-red-400',
-    bgColor: 'bg-red-100 dark:bg-red-900/30',
-    gradientFrom: 'from-red-50 dark:from-red-900/20',
-    gradientTo: 'to-red-100/50 dark:to-red-800/10',
-    borderColor: 'border-red-200/50 dark:border-red-800/30'
-  },
-  { 
-    name: 'Open Tickets', 
-    value: '15', 
-    change: '-3', 
-    changeType: 'decrease',
-    icon: TicketIcon,
     color: 'text-orange-600 dark:text-orange-400',
     bgColor: 'bg-orange-100 dark:bg-orange-900/30',
     gradientFrom: 'from-orange-50 dark:from-orange-900/20',
@@ -59,23 +33,11 @@ const stats = [
     borderColor: 'border-orange-200/50 dark:border-orange-800/30'
   },
   { 
-    name: 'Resolved Today', 
-    value: '8', 
-    change: '+5', 
+    name: 'Compliance Score', 
+    value: '94%', 
+    change: '+2%', 
     changeType: 'increase',
     icon: ShieldCheckIcon,
-    color: 'text-green-600 dark:text-green-400',
-    bgColor: 'bg-green-100 dark:bg-green-900/30',
-    gradientFrom: 'from-green-50 dark:from-green-900/20',
-    gradientTo: 'to-green-100/50 dark:to-green-800/10',
-    borderColor: 'border-green-200/50 dark:border-green-800/30'
-  },
-  { 
-    name: 'Avg Response Time', 
-    value: '4.2m', 
-    change: '-1.3m', 
-    changeType: 'decrease',
-    icon: ChartBarIcon,
     color: 'text-purple-600 dark:text-purple-400',
     bgColor: 'bg-purple-100 dark:bg-purple-900/30',
     gradientFrom: 'from-purple-50 dark:from-purple-900/20',
@@ -83,28 +45,16 @@ const stats = [
     borderColor: 'border-purple-200/50 dark:border-purple-800/30'
   },
   { 
-    name: 'Compliance Score', 
-    value: '94%', 
-    change: '+2%', 
-    changeType: 'increase',
-    icon: ShieldCheckIcon,
-    color: 'text-green-600 dark:text-green-400',
-    bgColor: 'bg-green-100 dark:bg-green-900/30',
-    gradientFrom: 'from-green-50 dark:from-green-900/20',
-    gradientTo: 'to-green-100/50 dark:to-green-800/10',
-    borderColor: 'border-green-200/50 dark:border-green-800/30'
-  },
-  { 
     name: 'Active Agents', 
     value: '127', 
     change: '+3', 
     changeType: 'increase',
     icon: ServerIcon,
-    color: 'text-blue-600 dark:text-blue-400',
-    bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-    gradientFrom: 'from-blue-50 dark:from-blue-900/20',
-    gradientTo: 'to-blue-100/50 dark:to-blue-800/10',
-    borderColor: 'border-blue-200/50 dark:border-blue-800/30'
+    color: 'text-green-600 dark:text-green-400',
+    bgColor: 'bg-green-100 dark:bg-green-900/30',
+    gradientFrom: 'from-green-50 dark:from-green-900/20',
+    gradientTo: 'to-green-100/50 dark:to-green-800/10',
+    borderColor: 'border-green-200/50 dark:border-green-800/30'
   },
 ]
 

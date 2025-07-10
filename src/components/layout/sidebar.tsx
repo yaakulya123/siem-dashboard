@@ -12,13 +12,14 @@ import {
   Cog6ToothIcon,
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
+import { SystemStatus } from './system-status'
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
   { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
-  { name: 'Users & Roles', href: '/users', icon: UsersIcon, badge: null },
+  { name: 'Agents Overview', href: '/users', icon: UsersIcon, badge: null },
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, badge: null },
 ]
 
@@ -86,33 +87,8 @@ export function Sidebar() {
 
             {/* Status indicators */}
             <li className="mt-auto">
-              <div className="text-xs font-semibold leading-6 text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
-                System Status
-              </div>
               <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-100 dark:border-gray-700/30 shadow-sm">
-                <ul role="list" className="space-y-2.5">
-                  <li className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Wazuh Manager</span>
-                    <div className="flex items-center space-x-1.5">
-                      <div className="status-dot active"></div>
-                      <span className="text-green-600 dark:text-green-400 text-xs font-medium">Online</span>
-                    </div>
-                  </li>
-                  <li className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">AI Engine</span>
-                    <div className="flex items-center space-x-1.5">
-                      <div className="status-dot active"></div>
-                      <span className="text-green-600 dark:text-green-400 text-xs font-medium">Active</span>
-                    </div>
-                  </li>
-                  <li className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Elasticsearch</span>
-                    <div className="flex items-center space-x-1.5">
-                      <div className="status-dot active"></div>
-                      <span className="text-green-600 dark:text-green-400 text-xs font-medium">Healthy</span>
-                    </div>
-                  </li>
-                </ul>
+                <SystemStatus />
               </div>
             </li>
           </ul>
