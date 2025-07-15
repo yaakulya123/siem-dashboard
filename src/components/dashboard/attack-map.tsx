@@ -12,7 +12,7 @@ interface Attack {
   sourceCode: string;
   targetCountry: string;
   targetCode: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: 'critical' | 'major' | 'minor';
   attackType: string;
   timestamp: Date;
   sourceCoords: [number, number];
@@ -86,7 +86,7 @@ const mockAttacks: Attack[] = [
     sourceCode: 'RU',
     targetCountry: 'Germany',
     targetCode: 'DE',
-    severity: 'high',
+    severity: 'major',
     attackType: 'Ransomware',
     timestamp: new Date(Date.now() - 300000),
     sourceCoords: countryCoords.RU,
@@ -99,7 +99,7 @@ const mockAttacks: Attack[] = [
     sourceCode: 'KP',
     targetCountry: 'South Korea',
     targetCode: 'KR',
-    severity: 'high',
+    severity: 'major',
     attackType: 'State Sponsored',
     timestamp: new Date(Date.now() - 150000),
     sourceCoords: countryCoords.KP,
@@ -125,7 +125,7 @@ const mockAttacks: Attack[] = [
     sourceCode: 'VN',
     targetCountry: 'Singapore',
     targetCode: 'SG',
-    severity: 'medium',
+    severity: 'minor',
     attackType: 'Phishing Campaign',
     timestamp: new Date(Date.now() - 600000),
     sourceCoords: countryCoords.VN,
@@ -137,17 +137,15 @@ const mockAttacks: Attack[] = [
 // Enhanced severity colors with better visual impact
 const severityColors = {
   critical: '#ff3b3b',  // Brighter red
-  high: '#ff7700',      // Brighter orange
-  medium: '#ffcc00',    // Brighter yellow
-  low: '#3b82f6',       // Brighter blue
+  major: '#ff7700',     // Brighter orange
+  minor: '#ffcc00',     // Brighter yellow
 };
 
 // Glow effect definitions
 const glowEffects = {
   critical: '0 0 8px #ff3b3b, 0 0 12px rgba(255, 59, 59, 0.6)',
-  high: '0 0 8px #ff7700, 0 0 12px rgba(255, 119, 0, 0.6)',
-  medium: '0 0 8px #ffcc00, 0 0 12px rgba(255, 204, 0, 0.6)',
-  low: '0 0 8px #3b82f6, 0 0 12px rgba(59, 130, 246, 0.6)',
+  major: '0 0 8px #ff7700, 0 0 12px rgba(255, 119, 0, 0.6)',
+  minor: '0 0 8px #ffcc00, 0 0 12px rgba(255, 204, 0, 0.6)',
 };
 
 export function AttackMap() {

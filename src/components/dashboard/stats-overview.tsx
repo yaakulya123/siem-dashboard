@@ -1,135 +1,64 @@
 'use client'
-import { FC } from 'react'
-import {
-  ExclamationTriangleIcon,
-  TicketIcon,
-  ClockIcon,
+
+import { 
+  ExclamationTriangleIcon, 
+  ClockIcon, 
   ShieldCheckIcon,
-  ServerIcon,
-  ChartBarIcon
+  ServerIcon
 } from '@heroicons/react/24/outline'
 
-// Type definition for dashboard metrics
-export type DashboardMetrics = {
-  active_agents: number
-  alerts_last_24hr: number
-  avg_response_time: string
-  compliance_score: number
-  critical_alerts: number
-  open_tickets: number
-  resolved_today: number
-  total_alerts: number
-}
+const stats = [
+  { 
+    name: 'Total Alerts (All-time)', 
+    value: '12,847', 
+    change: '+12%', 
+    changeType: 'increase',
+    icon: ExclamationTriangleIcon,
+    color: 'text-blue-600 dark:text-blue-400',
+    bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+    gradientFrom: 'from-blue-50 dark:from-blue-900/20',
+    gradientTo: 'to-blue-100/50 dark:to-blue-800/10',
+    borderColor: 'border-blue-200/50 dark:border-blue-800/30'
+  },
+  { 
+    name: 'Alerts Last 24h', 
+    value: '47', 
+    change: '-8%', 
+    changeType: 'decrease',
+    icon: ClockIcon,
+    color: 'text-orange-600 dark:text-orange-400',
+    bgColor: 'bg-orange-100 dark:bg-orange-900/30',
+    gradientFrom: 'from-orange-50 dark:from-orange-900/20',
+    gradientTo: 'to-orange-100/50 dark:to-orange-800/10',
+    borderColor: 'border-orange-200/50 dark:border-orange-800/30'
+  },
+  { 
+    name: 'Compliance Score', 
+    value: '94%', 
+    change: '+2%', 
+    changeType: 'increase',
+    icon: ShieldCheckIcon,
+    color: 'text-purple-600 dark:text-purple-400',
+    bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+    gradientFrom: 'from-purple-50 dark:from-purple-900/20',
+    gradientTo: 'to-purple-100/50 dark:to-purple-800/10',
+    borderColor: 'border-purple-200/50 dark:border-purple-800/30'
+  },
+  { 
+    name: 'Active Agents', 
+    value: '127', 
+    change: '+3', 
+    changeType: 'increase',
+    icon: ServerIcon,
+    color: 'text-green-600 dark:text-green-400',
+    bgColor: 'bg-green-100 dark:bg-green-900/30',
+    gradientFrom: 'from-green-50 dark:from-green-900/20',
+    gradientTo: 'to-green-100/50 dark:to-green-800/10',
+    borderColor: 'border-green-200/50 dark:border-green-800/30'
+  },
+]
 
-// Props type for StatsOverview component
-type StatsOverviewProps = {
-  data: DashboardMetrics | null
-}
-
-export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
-  if (!data) {
-    return <div className="text-sm text-gray-500">Loading stats...</div>
-  }
-
-  const stats = [
-    {
-      name: 'Total Alerts (All-time)',
-      value: data.total_alerts,
-      change: '+12%',
-      changeType: 'increase' as const,
-      icon: ExclamationTriangleIcon,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-      gradientFrom: 'from-blue-50 dark:from-blue-900/20',
-      gradientTo: 'to-blue-100/50 dark:to-blue-800/10',
-      borderColor: 'border-blue-200/50 dark:border-blue-800/30'
-    },
-    {
-      name: 'Alerts Last 24h',
-      value: data.alerts_last_24hr,
-      change: '-8%',
-      changeType: 'decrease' as const,
-      icon: ClockIcon,
-      color: 'text-orange-600 dark:text-orange-400',
-      bgColor: 'bg-orange-100 dark:bg-orange-900/30',
-      gradientFrom: 'from-orange-50 dark:from-orange-900/20',
-      gradientTo: 'to-orange-100/50 dark:to-orange-800/10',
-      borderColor: 'border-orange-200/50 dark:border-orange-800/30'
-    },
-    {
-      name: 'Critical Alerts',
-      value: data.critical_alerts,
-      change: '+2',
-      changeType: 'increase' as const,
-      icon: ExclamationTriangleIcon,
-      color: 'text-red-600 dark:text-red-400',
-      bgColor: 'bg-red-100 dark:bg-red-900/30',
-      gradientFrom: 'from-red-50 dark:from-red-900/20',
-      gradientTo: 'to-red-100/50 dark:to-red-800/10',
-      borderColor: 'border-red-200/50 dark:border-red-800/30'
-    },
-    {
-      name: 'Open Tickets',
-      value: data.open_tickets,
-      change: '-3',
-      changeType: 'decrease' as const,
-      icon: TicketIcon,
-      color: 'text-orange-600 dark:text-orange-400',
-      bgColor: 'bg-orange-100 dark:bg-orange-900/30',
-      gradientFrom: 'from-orange-50 dark:from-orange-900/20',
-      gradientTo: 'to-orange-100/50 dark:to-orange-800/10',
-      borderColor: 'border-orange-200/50 dark:border-orange-800/30'
-    },
-    {
-      name: 'Resolved Today',
-      value: data.resolved_today,
-      change: '+5',
-      changeType: 'increase' as const,
-      icon: ShieldCheckIcon,
-      color: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-100 dark:bg-green-900/30',
-      gradientFrom: 'from-green-50 dark:from-green-900/20',
-      gradientTo: 'to-green-100/50 dark:to-green-800/10',
-      borderColor: 'border-green-200/50 dark:border-green-800/30'
-    },
-    {
-      name: 'Avg Response Time',
-      value: data.avg_response_time,
-      change: '-1.3m',
-      changeType: 'decrease' as const,
-      icon: ChartBarIcon,
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-100 dark:bg-purple-900/30',
-      gradientFrom: 'from-purple-50 dark:from-purple-900/20',
-      gradientTo: 'to-purple-100/50 dark:to-purple-800/10',
-      borderColor: 'border-purple-200/50 dark:border-purple-800/30'
-    },
-    {
-      name: 'Compliance Score',
-      value: `${data.compliance_score}%`,
-      change: '+2%',
-      changeType: 'increase' as const,
-      icon: ShieldCheckIcon,
-      color: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-100 dark:bg-green-900/30',
-      gradientFrom: 'from-green-50 dark:from-green-900/20',
-      gradientTo: 'to-green-100/50 dark:to-green-800/10',
-      borderColor: 'border-green-200/50 dark:border-green-800/30'
-    },
-    {
-      name: 'Active Agents',
-      value: data.active_agents,
-      change: '+3',
-      changeType: 'increase' as const,
-      icon: ServerIcon,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-      gradientFrom: 'from-blue-50 dark:from-blue-900/20',
-      gradientTo: 'to-blue-100/50 dark:to-blue-800/10',
-      borderColor: 'border-blue-200/50 dark:border-blue-800/30'
-    },
-  ]
-
+export function StatsOverview() {
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((item) => (
@@ -183,24 +112,15 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
                   />
                 </svg>
               )}
-              <span className="sr-only">
-                {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by
-              </span>
+              <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
               {item.change}
             </p>
             <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-r ${item.gradientFrom} ${item.gradientTo} px-5 py-3 sm:px-6 border-t ${item.borderColor}`}>
               <div className="text-sm">
-                <a
-                  href="#"
-                  className={`font-medium ${item.color} hover:opacity-80 flex items-center justify-between`}
-                >
+                <a href="#" className={`font-medium ${item.color} hover:opacity-80 flex items-center justify-between`}>
                   <span>View details</span>
                   <svg className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                      fillRule="evenodd"
-                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                      clipRule="evenodd"
-                    />
+                    <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                   </svg>
                   <span className="sr-only"> for {item.name}</span>
                 </a>
@@ -211,4 +131,4 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
       ))}
     </div>
   )
-}
+} 
