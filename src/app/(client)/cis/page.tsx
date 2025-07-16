@@ -31,8 +31,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v cramfs.ismod',
     result: 'Passed',
     description: 'The cramfs filesystem type is a compressed read-only Linux filesystem embedded in small footprint systems.',
-    category: 'Filesystem',
-    severity: 'minor'
+
   },
   {
     id: '36001',
@@ -40,8 +39,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v freevxfs',
     result: 'Failed',
     description: 'The freevxfs filesystem type is a free version of the Veritas type filesystem.',
-    category: 'Filesystem',
-    severity: 'minor'
+  
   },
   {
     id: '36002',
@@ -49,8 +47,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v jffs2',
     result: 'Failed',
     description: 'The jffs2 (journaling flash filesystem 2) filesystem type is a log-structured filesystem.',
-    category: 'Filesystem',
-    severity: 'minor'
+ 
   },
   {
     id: '36003',
@@ -58,8 +55,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v hfs',
     result: 'Failed',
     description: 'The hfs filesystem type is a hierarchical filesystem developed by Apple.',
-    category: 'Filesystem',
-    severity: 'minor'
+   
   },
   {
     id: '36004',
@@ -67,8 +63,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v hfsplus',
     result: 'Failed',
     description: 'The hfsplus filesystem type is a hierarchical filesystem designed to replace hfs.',
-    category: 'Filesystem',
-    severity: 'minor'
+ 
   },
   {
     id: '36005',
@@ -76,8 +71,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v squashfs',
     result: 'Failed',
     description: 'The squashfs filesystem type is a compressed read-only Linux filesystem.',
-    category: 'Filesystem',
-    severity: 'minor'
+
   },
   {
     id: '36006',
@@ -85,8 +79,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: /sbin/modprobe -n -v udf',
     result: 'Failed',
     description: 'The udf filesystem type is the universal disk format used to implement ISO/IEC 13346.',
-    category: 'Filesystem',
-    severity: 'minor'
+  
   },
   {
     id: '36007',
@@ -94,8 +87,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: modprobe -n -v fat',
     result: 'Failed',
     description: 'The FAT filesystem format is primarily used on older windows systems.',
-    category: 'Filesystem',
-    severity: 'minor'
+   
   },
   {
     id: '36008',
@@ -103,8 +95,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/tmp\\s"',
     result: 'Passed',
     description: 'The /tmp directory is a world-writable directory used for temporary storage.',
-    category: 'Filesystem',
-    severity: 'major'
+
   },
   {
     id: '36009',
@@ -112,8 +103,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/tmp\\s.*nodev"',
     result: 'Passed',
     description: 'The nodev mount option specifies that the filesystem cannot contain special devices.',
-    category: 'Filesystem',
-    severity: 'major'
+  
   },
   {
     id: '36010',
@@ -121,8 +111,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/tmp\\s.*nosuid"',
     result: 'Failed',
     description: 'The nosuid mount option specifies that the filesystem cannot contain setuid files.',
-    category: 'Filesystem',
-    severity: 'critical'
+    
   },
   {
     id: '36011',
@@ -130,8 +119,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/tmp\\s.*noexec"',
     result: 'Failed',
     description: 'The noexec mount option specifies that the filesystem cannot contain executable binaries.',
-    category: 'Filesystem',
-    severity: 'critical'
+    
   },
   {
     id: '36012',
@@ -139,8 +127,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var\\s"',
     result: 'Passed',
     description: 'The /var directory is used by daemons and other system services to store frequently-changing data.',
-    category: 'Filesystem',
-    severity: 'major'
+   
   },
   {
     id: '36013',
@@ -148,8 +135,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/tmp\\s"',
     result: 'Not applicable',
     description: 'The /var/tmp directory is a world-writable directory used for temporary storage.',
-    category: 'Filesystem',
-    severity: 'minor'
+    
   },
   {
     id: '36014',
@@ -157,8 +143,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/tmp\\s.*nodev"',
     result: 'Not applicable',
     description: 'The nodev mount option specifies that the filesystem cannot contain special devices.',
-    category: 'Filesystem',
-    severity: 'minor'
+   
   },
   {
     id: '36015',
@@ -166,8 +151,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/tmp\\s.*nosuid"',
     result: 'Not applicable',
     description: 'The nosuid mount option specifies that the filesystem cannot contain setuid files.',
-    category: 'Filesystem',
-    severity: 'minor'
+   
   },
   {
     id: '36016',
@@ -175,8 +159,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/tmp\\s.*noexec"',
     result: 'Not applicable',
     description: 'The noexec mount option specifies that the filesystem cannot contain executable binaries.',
-    category: 'Filesystem',
-    severity: 'minor'
+    
   },
   {
     id: '36017',
@@ -184,8 +167,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/log\\s"',
     result: 'Passed',
     description: 'The /var/log directory is used by system services to store log files.',
-    category: 'Logging',
-    severity: 'major'
+    
   },
   {
     id: '36018',
@@ -193,8 +175,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/var/log/audit\\s"',
     result: 'Failed',
     description: 'The /var/log/audit directory contains audit log files.',
-    category: 'Logging',
-    severity: 'critical'
+    
   },
   {
     id: '36019',
@@ -202,8 +183,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/home\\s"',
     result: 'Passed',
     description: 'The /home directory is used to support users home directories.',
-    category: 'Filesystem',
-    severity: 'major'
+   
   },
   {
     id: '36020',
@@ -211,8 +191,7 @@ const cisBenchmarkData: BenchmarkCheck[] = [
     target: 'Command: mount | grep -E "\\s/home\\s.*nodev"',
     result: 'Failed',
     description: 'The nodev mount option specifies that the filesystem cannot contain special devices.',
-    category: 'Filesystem',
-    severity: 'major'
+    
   }
 ]
 
@@ -432,117 +411,100 @@ export default function CISPage() {
       </div>
 
       {/* CIS Benchmark Checks Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Benchmark Checks ({filteredChecks.length})
-          </h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-900/50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Check ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Category
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Severity
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Result
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Target
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredChecks.map((check) => (
-                <tr key={check.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      {check.id}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 dark:text-white max-w-md">
-                      {check.title}
-                    </div>
-                    {check.description && (
-                      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        {check.description.slice(0, 100)}...
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400">
-                      {check.category}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={clsx(
-                      'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
-                      getSeverityColor(check.severity || 'minor')
-                    )}>
-                      {check.severity}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      {getResultIcon(check.result)}
-                      <span className={clsx(
-                        'ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full',
-                        getResultColor(check.result)
-                      )}>
-                        {check.result}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 font-mono max-w-xs truncate">
-                      {check.target}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        
-        {filteredChecks.length === 0 && (
-          <div className="text-center py-12">
-            <InformationCircleIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No checks found</h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Try adjusting your search criteria.
-            </p>
-          </div>
-        )}
+      {/* CIS Benchmark Checks Table */}
+<div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+  <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+      Benchmark Checks ({filteredChecks.length})
+    </h3>
+  </div>
+  <div className="overflow-x-auto">
+    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead className="bg-gray-50 dark:bg-gray-900/50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Check ID
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Title
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Result
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Target
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+        {filteredChecks.map((check) => (
+          <tr key={check.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                {check.id}
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="text-sm text-gray-900 dark:text-white max-w-md">
+                {check.title}
+              </div>
+              {check.description && (
+                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {check.description.slice(0, 100)}...
+                </div>
+              )}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex items-center">
+                {getResultIcon(check.result)}
+                <span className={clsx(
+                  'ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full',
+                  getResultColor(check.result)
+                )}>
+                  {check.result}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="text-sm text-gray-500 dark:text-gray-400 font-mono max-w-xs truncate">
+                {check.target}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Showing {filteredChecks.length} of {totalChecks} checks
-          </div>
-          <div className="flex items-center space-x-2">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center space-x-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span>Refresh</span>
-            </button>
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center space-x-2">
-              <ArrowDownTrayIcon className="w-4 h-4" />
-              <span>Export</span>
-            </button>
-          </div>
-        </div>
-      </div>
+  {filteredChecks.length === 0 && (
+    <div className="text-center py-12">
+      <InformationCircleIcon className="mx-auto h-12 w-12 text-gray-400" />
+      <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No checks found</h3>
+      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Try adjusting your search criteria.
+      </p>
+    </div>
+  )}
+
+  <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+    <div className="text-sm text-gray-500 dark:text-gray-400">
+      Showing {filteredChecks.length} of {totalChecks} checks
+    </div>
+    <div className="flex items-center space-x-2">
+      <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center space-x-2">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>Refresh</span>
+      </button>
+      <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center space-x-2">
+        <ArrowDownTrayIcon className="w-4 h-4" />
+        <span>Export</span>
+      </button>
+    </div>
+  </div>
+</div>
+
     </div>
   )
 } 

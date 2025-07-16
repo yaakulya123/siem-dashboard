@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { ExclamationTriangleIcon, ClockIcon, UserIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
+import CreateTicketModal from '@/components/tickets/CreateTicketModal';
+
 
 interface Alert {
   id: string
@@ -14,6 +16,7 @@ interface Alert {
   rule: string
   status: 'open' | 'investigating' | 'resolved'
 }
+
 
 const mockAlerts: Alert[] = [
   {
@@ -610,6 +613,9 @@ export function LiveAlertsTable() {
   const endIndex = startIndex + alertsPerPage
   const currentAlerts = filteredAlerts.slice(startIndex, endIndex)
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null);
+
   // Reset to first page when filter changes
   useEffect(() => {
     setCurrentPage(1)
@@ -777,13 +783,18 @@ export function LiveAlertsTable() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   {alert.status === 'open' && (
-                    <button
-                      onClick={() => createTicket(alert.id)}
-                      className="inline-flex items-center px-3 py-1.5 border border-blue-200 dark:border-blue-800/50 text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 transition-colors duration-150 shadow-sm"
-                    >
-                      <UserIcon className="w-3.5 h-3.5 mr-1.5" />
-                      Create Ticket
-                    </button>
+                   <button
+  onClick={() => {
+    setSelectedAlertId(alert.id);
+    setShowModal(true);
+  }}
+  className="inline-flex items-center px-3 py-1.5 border border-blue-200 dark:border-blue-800/50 text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 transition-colors duration-150 shadow-sm"
+>
+  <UserIcon className="w-3.5 h-3.5 mr-1.5" />
+  Create Ticket
+</button>
+
+
                   )}
                 </td>
               </tr>
@@ -847,6 +858,14 @@ export function LiveAlertsTable() {
           </button>
         </div>
       </div>
+      {showModal && selectedAlertId && (
+  <CreateTicketModal alertId={selectedAlertId} onClose={() => {
+    setShowModal(false);
+    setSelectedAlertId(null);
+  }} />
+)}
+
     </div>
+    
   )
 } 
