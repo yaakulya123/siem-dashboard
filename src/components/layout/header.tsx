@@ -1,14 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { BellIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
-import { useTheme } from '@/components/providers/theme-provider'
+import { BellIcon } from '@heroicons/react/24/outline'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { clsx } from 'clsx'
 
 export function Header() {
-  const { theme, setTheme } = useTheme()
   const [notifications] = useState([
     { id: 1, message: 'Critical alert: Unusual login activity detected', time: '2 min ago', read: false },
     { id: 2, message: 'Weekly security report is ready', time: '1 hour ago', read: false },
@@ -20,40 +18,10 @@ export function Header() {
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200/70 dark:border-gray-800/40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        {/* Search */}
-        <form className="relative flex flex-1" action="#" method="GET">
-          <label htmlFor="search-field" className="sr-only">
-            Search
-          </label>
-          <input
-            id="search-field"
-            className="block h-full w-full border-0 py-0 pl-9 pr-0 text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm bg-transparent transition-all duration-200 focus:pl-10"
-            placeholder="Search alerts, tickets, or users..."
-            type="search"
-            name="search"
-          />
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-1.5">
-            <svg className="h-4 w-4 text-gray-400 transition-all duration-200" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
-            </svg>
-          </div>
-        </form>
-
+        {/* Spacer to push content to the right */}
+        <div className="flex-1"></div>
+        
         <div className="flex items-center gap-x-4 lg:gap-x-6">
-          {/* Theme toggle */}
-          <button
-            type="button"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="rounded-full p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50/80 dark:bg-gray-800/80 shadow-sm border border-gray-100/50 dark:border-gray-700/30 transition-all duration-200 hover:scale-105"
-          >
-            <span className="sr-only">Toggle theme</span>
-            {theme === 'dark' ? (
-              <SunIcon className="h-5 w-5" />
-            ) : (
-              <MoonIcon className="h-5 w-5" />
-            )}
-          </button>
-
           {/* Notifications */}
           <Menu as="div" className="relative">
             <Menu.Button className="relative rounded-full p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50/80 dark:bg-gray-800/80 shadow-sm border border-gray-100/50 dark:border-gray-700/30 transition-all duration-200 hover:scale-105">

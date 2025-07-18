@@ -1,0 +1,278 @@
+'use client'
+
+import { useState } from 'react'
+import { 
+  ComputerDesktopIcon, 
+  PlusIcon, 
+  ServerIcon, 
+  GlobeAltIcon,
+  CpuChipIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ExclamationTriangleIcon
+} from '@heroicons/react/24/outline'
+import { clsx } from 'clsx'
+
+interface Agent {
+  id: string
+  name: string
+  ipAddress: string
+  operatingSystem: string
+  status: 'active' | 'inactive' | 'warning'
+  lastSeen: string
+  version: string
+  location: string
+}
+
+const mockAgents: Agent[] = [
+  {
+    id: '1',
+    name: 'Kali_Docker',
+    ipAddress: '192.68.1.44',
+    operatingSystem: 'Kali GNU/Linux 2025.2',
+    status: 'active',
+    lastSeen: '2 minutes ago',
+    version: '4.8.0',
+    location: 'Data Center 1'
+  },
+  {
+    id: '2',
+    name: 'Ubuntu_Server_01',
+    ipAddress: '10.0.1.15',
+    operatingSystem: 'Ubuntu 22.04.3 LTS',
+    status: 'active',
+    lastSeen: '1 minute ago',
+    version: '4.8.0',
+    location: 'Data Center 2'
+  },
+  {
+    id: '3',
+    name: 'Windows_DC_01',
+    ipAddress: '192.168.1.100',
+    operatingSystem: 'Windows Server 2022',
+    status: 'active',
+    lastSeen: '5 minutes ago',
+    version: '4.7.2',
+    location: 'Corporate HQ'
+  },
+  {
+    id: '4',
+    name: 'CentOS_Web_01',
+    ipAddress: '172.16.0.50',
+    operatingSystem: 'CentOS 9 Stream',
+    status: 'warning',
+    lastSeen: '15 minutes ago',
+    version: '4.8.0',
+    location: 'Data Center 1'
+  },
+  {
+    id: '5',
+    name: 'MacOS_Workstation',
+    ipAddress: '10.0.2.25',
+    operatingSystem: 'macOS Sonoma 14.2',
+    status: 'inactive',
+    lastSeen: '2 hours ago',
+    version: '4.7.1',
+    location: 'Office Floor 3'
+  },
+  {
+    id: '6',
+    name: 'RedHat_DB_01',
+    ipAddress: '192.168.2.200',
+    operatingSystem: 'Red Hat Enterprise Linux 9',
+    status: 'active',
+    lastSeen: '30 seconds ago',
+    version: '4.8.0',
+    location: 'Data Center 2'
+  }
+]
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'active': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+    case 'inactive': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+    case 'warning': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+    default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+  }
+}
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'active': return <CheckCircleIcon className="w-5 h-5 text-green-500" />
+    case 'inactive': return <XCircleIcon className="w-5 h-5 text-red-500" />
+    case 'warning': return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
+    default: return <XCircleIcon className="w-5 h-5 text-gray-500" />
+  }
+}
+
+const getOSIcon = (os: string) => {
+  if (os.toLowerCase().includes('linux') || os.toLowerCase().includes('ubuntu') || os.toLowerCase().includes('centos') || os.toLowerCase().includes('kali') || os.toLowerCase().includes('red hat')) {
+    return <ServerIcon className="w-5 h-5 text-blue-500" />
+  } else if (os.toLowerCase().includes('windows')) {
+    return <ComputerDesktopIcon className="w-5 h-5 text-blue-600" />
+  } else if (os.toLowerCase().includes('macos')) {
+    return <ComputerDesktopIcon className="w-5 h-5 text-gray-600" />
+  }
+  return <CpuChipIcon className="w-5 h-5 text-gray-500" />
+}
+
+export default function AgentsPage() {
+  const [agents, setAgents] = useState<Agent[]>(mockAgents)
+  const [showAddModal, setShowAddModal] = useState(false)
+
+  const toggleAgentStatus = (agentId: string) => {
+    setAgents(agents.map(agent => 
+      agent.id === agentId ? { 
+        ...agent, 
+        status: agent.status === 'active' ? 'inactive' : 'active' 
+      } : agent
+    ))
+  }
+
+  const deleteAgent = (agentId: string) => {
+    setAgents(agents.filter(agent => agent.id !== agentId))
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Agents Overview
+          </h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Monitor and manage security agents across your infrastructure
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+        >
+          <PlusIcon className="w-4 h-4 mr-2" />
+          Add Agent
+        </button>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Security Agents ({agents.length})
+          </h3>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Agent ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  IP Address
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Operating System
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Last Seen
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {agents.map((agent) => (
+                <tr key={agent.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 w-8 h-8">
+                        <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                            {agent.id}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 mr-3">
+                        {getOSIcon(agent.operatingSystem)}
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          {agent.name}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {agent.location}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <GlobeAltIcon className="w-4 h-4 text-gray-400 mr-2" />
+                      <span className="text-sm font-mono text-gray-900 dark:text-white">
+                        {agent.ipAddress}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 dark:text-white">
+                      {agent.operatingSystem}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Version {agent.version}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      {getStatusIcon(agent.status)}
+                      <span className={clsx(
+                        'ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full',
+                        getStatusColor(agent.status)
+                      )}>
+                        {agent.status.charAt(0).toUpperCase() + agent.status.slice(1)}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {agent.lastSeen}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => toggleAgentStatus(agent.id)}
+                        className={clsx(
+                          'inline-flex items-center px-2 py-1 text-xs font-medium rounded',
+                          agent.status === 'active' 
+                            ? 'text-red-600 hover:text-red-900 dark:text-red-400' 
+                            : 'text-green-600 hover:text-green-900 dark:text-green-400'
+                        )}
+                      >
+                        {agent.status === 'active' ? 'Disable' : 'Enable'}
+                      </button>
+                      <button
+                        onClick={() => deleteAgent(agent.id)}
+                        className="text-red-600 hover:text-red-900 dark:text-red-400"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
