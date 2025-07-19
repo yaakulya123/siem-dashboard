@@ -5,9 +5,9 @@ const https = require('https');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config();
+dotenv.config(); // for .env in the root directory
 
-// Create Express app
+
 const app = express();
 
 // Middleware
@@ -249,7 +249,9 @@ app.get('/agents-summary', async (req, res) => {
         ip: agent.ip,
         os_name: os.name,
         status: agent.status,
-        os_version: os.version
+        os_version: os.version,
+        last_keepalive: agent.lastKeepAlive || 'N/A',
+        nodename: agent.node_name || 'N/A',
       };
 
       try {
@@ -303,7 +305,7 @@ app.get('/agents-summary', async (req, res) => {
           return {
             name: source.package?.name,
             id: source.vulnerability?.id,
-            severity: source.vulnerability?.score?.base
+            severity: source.vulnerability?.severity
           };
         });
       } catch (err) {

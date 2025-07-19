@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import {
+  ArrowDownTrayIcon,
   ComputerDesktopIcon,
   PlusIcon,
   ServerIcon,
@@ -24,9 +25,9 @@ interface Agent {
   ipAddress: string
   operatingSystem: string
   status: 'active' | 'inactive' | 'warning' | 'quarantined'
-  lastSeen: string
+  last_keepalive: string
   version: string
-  location: string
+  nodename: string
   pass?: number
   fail?: number
   invalid?: number
@@ -35,7 +36,7 @@ interface Agent {
   vulnerabilities?: {
     name: string
     id: string
-    severity: number
+    severity: string
   }[]
 }
 
@@ -49,144 +50,15 @@ interface BenchmarkCheck {
   severity?: 'critical' | 'major' | 'minor'
 }
 
-interface NISTRequirement {
-  id: string
-  name: string
-  count: number
-  color: string
-  description?: string
-  controls?: string[]
-  category?: 'AC' | 'AU' | 'CA' | 'CM' | 'IA' | 'SA' | 'SC' | 'SI'
-}
-
 // CIS Benchmark data for agents
-const cisBenchmarkData: BenchmarkCheck[] = [
-  {
-    id: '36000',
-    title: 'Ensure mounting of cramfs filesystems is disabled.',
-    target: 'Command: modprobe -n -v cramfs.ismod',
-    result: 'Passed',
-    description: 'The cramfs filesystem type is a compressed read-only Linux filesystem embedded in small footprint systems.'
-  },
-  {
-    id: '36001',
-    title: 'Ensure mounting of freevxfs filesystems is disabled.',
-    target: 'Command: modprobe -n -v freevxfs',
-    result: 'Failed',
-    description: 'The freevxfs filesystem type is a free version of the Veritas type filesystem.'
-  },
-  {
-    id: '36002',
-    title: 'Ensure mounting of jffs2 filesystems is disabled.',
-    target: 'Command: modprobe -n -v jffs2',
-    result: 'Failed',
-    description: 'The jffs2 (journaling flash filesystem 2) filesystem type is a log-structured filesystem.'
-  },
-  {
-    id: '36010',
-    title: 'Ensure nosuid option set on /tmp partition.',
-    target: 'Command: mount | grep -E "\\s/tmp\\s.*nosuid"',
-    result: 'Failed',
-    description: 'The nosuid mount option specifies that the filesystem cannot contain setuid files.'
-  },
-  {
-    id: '36011',
-    title: 'Ensure noexec option set on /tmp partition.',
-    target: 'Command: mount | grep -E "\\s/tmp\\s.*noexec"',
-    result: 'Failed',
-    description: 'The noexec mount option specifies that the filesystem cannot contain executable binaries.'
-  },
-  {
-    id: '36018',
-    title: 'Ensure /var/log/audit is configured.',
-    target: 'Command: mount | grep -E "\\s/var/log/audit\\s"',
-    result: 'Failed',
-    description: 'The /var/log/audit directory contains audit log files.'
-  }
-]
-
-// NIST 800-53 Requirements data for agents
-// const nistRequirements: NISTRequirement[] = [
-//   {
-//     id: 'CM',
-//     name: 'CONFIGURATION MANAGEMENT',
-//     count: 192,
-//     color: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-//     description: 'Controls for establishing and maintaining baseline configurations and inventories',
-//     controls: ['CM-1', 'CM-2', 'CM-3', 'CM-4', 'CM-5', 'CM-6', 'CM-7', 'CM-8'],
-//     category: 'CM'
-//   },
-//   {
-//     id: 'AC',
-//     name: 'ACCESS CONTROL',
-//     count: 8,
-//     color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
-//     description: 'Controls for limiting information system access to authorized users',
-//     controls: ['AC-1', 'AC-2', 'AC-3', 'AC-4', 'AC-5', 'AC-6', 'AC-7', 'AC-8'],
-//     category: 'AC'
-//   },
-//   {
-//     id: 'AU',
-//     name: 'AUDIT AND ACCOUNTABILITY',
-//     count: 5,
-//     color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400',
-//     description: 'Controls for creating, protecting, and retaining audit records',
-//     controls: ['AU-1', 'AU-2', 'AU-3', 'AU-4', 'AU-5'],
-//     category: 'AU'
-//   },
-//   {
-//     id: 'CA',
-//     name: 'ASSESSMENT, AUTHORIZATION, AND MONITORING',
-//     count: 0,
-//     color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-//     description: 'Controls for assessing, authorizing, and monitoring security controls',
-//     controls: [],
-//     category: 'CA'
-//   },
-//   {
-//     id: 'IA',
-//     name: 'IDENTIFICATION AND AUTHENTICATION',
-//     count: 0,
-//     color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-//     description: 'Controls for identifying and authenticating users and devices',
-//     controls: [],
-//     category: 'IA'
-//   },
-//   {
-//     id: 'SA',
-//     name: 'SYSTEM AND SERVICES ACQUISITION',
-//     count: 0,
-//     color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-//     description: 'Controls for acquiring, developing, and maintaining systems and services',
-//     controls: [],
-//     category: 'SA'
-//   },
-//   {
-//     id: 'SC',
-//     name: 'SYSTEM AND COMMUNICATIONS PROTECTION',
-//     count: 0,
-//     color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-//     description: 'Controls for protecting system and communications at the application and network levels',
-//     controls: [],
-//     category: 'SC'
-//   },
-//   {
-//     id: 'SI',
-//     name: 'SYSTEM AND INFORMATION INTEGRITY',
-//     count: 0,
-//     color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-//     description: 'Controls for identifying, reporting, and correcting information system flaws',
-//     controls: [],
-//     category: 'SI'
-//   }
-// ]
+const cisBenchmarkData: BenchmarkCheck[] = []
 
 const mockAgents: Agent[] = []
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case 'active': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-    case 'inactive': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+    case 'disconnected': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
     case 'warning': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
     case 'quarantined': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400'
     default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
@@ -196,7 +68,7 @@ const getStatusColor = (status: string) => {
 const getStatusIcon = (status: string) => {
   switch (status) {
     case 'active': return <CheckCircleIcon className="w-5 h-5 text-green-500" />
-    case 'inactive': return <XCircleIcon className="w-5 h-5 text-red-500" />
+    case 'disconnected': return <XCircleIcon className="w-5 h-5 text-red-500" />
     case 'warning': return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
     case 'quarantined': return <ShieldExclamationIcon className="w-5 h-5 text-orange-500" />
     default: return <XCircleIcon className="w-5 h-5 text-gray-500" />
@@ -216,11 +88,11 @@ const getOSIcon = (os: string) => {
 
 const getResultIcon = (result: string) => {
   switch (result) {
-    case 'Passed':
+    case 'passed':
       return <CheckCircleIcon className="w-4 h-4 text-green-500" />
-    case 'Failed':
+    case 'failed':
       return <XCircleIcon className="w-4 h-4 text-red-500" />
-    case 'Not applicable':
+    case 'not applicable':
       return <ExclamationTriangleIcon className="w-4 h-4 text-gray-500" />
     default:
       return <InformationCircleIcon className="w-4 h-4 text-gray-500" />
@@ -229,11 +101,11 @@ const getResultIcon = (result: string) => {
 
 const getResultColor = (result: string) => {
   switch (result) {
-    case 'Passed':
+    case 'passed':
       return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-    case 'Failed':
+    case 'failed':
       return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-    case 'Not applicable':
+    case 'not applicable':
       return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
@@ -247,7 +119,6 @@ export default function AgentsPage() {
   const [showAgentModal, setShowAgentModal] = useState(false)
   const [activeTab, setActiveTab] = useState<'dashboard' | 'cis' | 'vulnerabilities'>('dashboard')
   const [cisSearchTerm, setCisSearchTerm] = useState('')
-  const [nistSearchTerm, setNistSearchTerm] = useState('')
   const [showQuarantineModal, setShowQuarantineModal] = useState(false)
   const [agentToQuarantine, setAgentToQuarantine] = useState<Agent | null>(null)
   const [loading, setLoading] = useState(true);
@@ -300,7 +171,6 @@ export default function AgentsPage() {
     setSelectedAgent(null)
     setActiveTab('dashboard')
     setCisSearchTerm('')
-    setNistSearchTerm('')
   }
 
   // CIS Benchmark calculations
@@ -352,10 +222,10 @@ export default function AgentsPage() {
               name: agent.name || 'Unknown',
               ipAddress: agent.ip || '',
               operatingSystem: agent.os_name + (agent.os_version ? ' ' + agent.os_version : ''),
-              status: agent.status || 'inactive',
-              lastSeen: 'Unknown',
+              status: agent.status || 'disconnected',
+              last_keepalive: agent.last_keepalive || 'Unknown',
               version: agent.os_version || '',
-              location: agent.location || 'location',
+              nodename: agent.nodename || 'N/A',
               cis_checks: agent.cis_checks || [],
               pass: agent.pass ?? 0,
               fail: agent.fail ?? 0,
@@ -429,7 +299,7 @@ export default function AgentsPage() {
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Last Seen
+                  Last Keep Alive
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
@@ -455,7 +325,7 @@ export default function AgentsPage() {
                         <div className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                           {agent.name}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{agent.location}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{agent.nodename}</div>
                       </div>
                     </div>
                   </td>
@@ -477,7 +347,11 @@ export default function AgentsPage() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{agent.lastSeen}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {agent.last_keepalive && agent.last_keepalive !== 'Unknown'
+                      ? new Date(agent.last_keepalive).toLocaleString()
+                      : 'Unknown'}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2 items-center">
                       {agent.status !== 'quarantined' ? (
@@ -589,7 +463,7 @@ export default function AgentsPage() {
                               CIS Compliance
                             </dt>
                             <dd className="text-2xl font-bold text-gray-900 dark:text-white">
-                              {cisStats.score}%
+                              {selectedAgent.score}%
                             </dd>
                           </dl>
                         </div>
@@ -646,12 +520,14 @@ export default function AgentsPage() {
                         <dd className="text-sm text-gray-900 dark:text-white">{selectedAgent.version}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Location</dt>
-                        <dd className="text-sm text-gray-900 dark:text-white">{selectedAgent.location}</dd>
+                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Node</dt>
+                        <dd className="text-sm text-gray-900 dark:text-white">{selectedAgent.nodename}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Last Seen</dt>
-                        <dd className="text-sm text-gray-900 dark:text-white">{selectedAgent.lastSeen}</dd>
+                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Last Keep Alive</dt>
+                        <dd className="text-sm text-gray-900 dark:text-white">{selectedAgent.last_keepalive && selectedAgent.last_keepalive !== 'Unknown'
+                          ? new Date(selectedAgent.last_keepalive).toLocaleString()
+                          : 'Unknown'}</dd>
                       </div>
                     </dl>
                   </div>
@@ -661,13 +537,20 @@ export default function AgentsPage() {
               {activeTab === 'cis' && (
                 <div className="space-y-6">
                   {/* CIS Header */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      CIS Distribution Independent Linux Benchmark v2.0.0
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      End scan: Jul 9, 2025 @ 17:23:10.000
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        CIS Distribution Independent Linux Benchmark v2.0.0
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        End scan: Jul 9, 2025 @ 17:23:10.000
+                      </p>
+                    </div>
+                    <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                      <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
+                      Export Report
+                    </button>
+
                   </div>
 
                   {/* CIS Stats */}
@@ -715,8 +598,8 @@ export default function AgentsPage() {
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                       <thead className="bg-gray-50 dark:bg-gray-900/50">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Check</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Description</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Id</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Title</th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Result</th>
                         </tr>
                       </thead>
@@ -725,16 +608,19 @@ export default function AgentsPage() {
                           <tr key={check.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td className="px-4 py-3">
                               <div className="text-sm font-medium text-gray-900 dark:text-white">{check.id}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">{check.command}</div>
                             </td>
                             <td className="px-4 py-3">
-                              <div className="text-sm text-gray-900 dark:text-white">{check.title}</div>
-                              {check.description && (
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">{check.title}</div>
+                              {/* {check.description && (
                                 <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                   {check.description.slice(0, 100)}...
                                 </div>
-                              )}
+                              )} */}
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Command : {check.command || "N/A"}</div>
                             </td>
+                            {/* <td className="px-4 py-3 max-w-xs truncate">
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">{check.command}</div>
+                            </td> */}
                             <td className="px-4 py-3">
                               <div className="flex items-center">
                                 {getResultIcon(check.result)}
@@ -770,11 +656,11 @@ export default function AgentsPage() {
                   {(() => {
                     const vulns = selectedAgent.vulnerabilities || [];
                     const total = vulns.length;
-                    const critical = vulns.filter(v => v.severity >= 9).length;
-                    const high = vulns.filter(v => v.severity >= 7 && v.severity < 9).length;
-                    const medium = vulns.filter(v => v.severity >= 4 && v.severity < 7).length;
-                    const low = vulns.filter(v => v.severity >= 0 && v.severity < 4).length;
-                    const unknown = vulns.filter(v => v.severity < 0).length;
+                    const critical = vulns.filter(v => v.severity === 'Critical').length;
+                    const high = vulns.filter(v => v.severity === 'High').length;
+                    const medium = vulns.filter(v => v.severity === 'Medium').length;
+                    const low = vulns.filter(v => v.severity === 'Low').length;
+                    const unknown = vulns.filter(v => !['Critical', 'High', 'Medium', 'Low'].includes(v.severity)).length;
 
                     // For donut chart
                     const donutData = [
@@ -782,6 +668,7 @@ export default function AgentsPage() {
                       { label: 'High', value: high, color: '#ea580c' },
                       { label: 'Medium', value: medium, color: '#d97706' },
                       { label: 'Low', value: low, color: '#16a34a' },
+                      { label: 'Unknown', value: unknown, color: '#6b6b6bff' },
                     ];
                     const donutTotal = donutData.reduce((sum, d) => sum + d.value, 0) || 1;
                     let offset = 0;
@@ -937,10 +824,11 @@ export default function AgentsPage() {
                             {vulns.map((vuln: any, index: number) => (
                               <div key={index} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                 <div className="flex-shrink-0">
-                                  <div className={`w-3 h-3 rounded-full ${vuln.severity >= 9 ? 'bg-red-600' :
-                                    vuln.severity >= 7 ? 'bg-orange-600' :
-                                      vuln.severity >= 4 ? 'bg-yellow-600' :
-                                        vuln.severity >= 0 ? 'bg-green-600' : 'bg-gray-400'
+                                  <div className={`w-3 h-3 rounded-full ${vuln.severity === 'Critical' ? 'bg-red-600' :
+                                    vuln.severity === 'High' ? 'bg-orange-600' :
+                                      vuln.severity === 'Medium' ? 'bg-yellow-600' :
+                                        vuln.severity === 'Low' ? 'bg-green-600' :
+                                          'bg-gray-400'
                                     }`}></div>
                                 </div>
                                 <div className="flex-1 min-w-0">
