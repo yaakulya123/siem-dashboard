@@ -1,7 +1,7 @@
 // Alert types
 export interface Alert {
   id: string
-  severity: 'critical' | 'high' | 'medium' | 'low' | 'info'
+  severity: 'critical' | 'major' | 'minor'
   title: string
   description: string
   timestamp: Date
@@ -18,7 +18,7 @@ export interface Ticket {
   title: string
   description: string
   status: 'open' | 'in-progress' | 'closed'
-  priority: 'critical' | 'high' | 'medium' | 'low'
+  priority: 'critical' | 'major' | 'minor'
   assignee: string
   reporter: string
   createdAt: Date
@@ -53,7 +53,7 @@ export interface DashboardStats {
 
 // Severity distribution
 export interface SeverityData {
-  severity: 'critical' | 'high' | 'medium' | 'low' | 'info'
+  severity: 'critical' | 'major' | 'minor'
   count: number
   percentage: number
 }
@@ -76,10 +76,13 @@ export interface ComplianceRule {
   id: string
   name: string
   description: string
-  framework: 'ISO27001' | 'SOC2' | 'PCI-DSS' | 'HIPAA' | 'GDPR'
+  framework: 'ISO27001' | 'SOC2' | 'PCI-DSS' | 'HIPAA' | 'GDPR' | 'NIST' | 'CIS'
   status: 'compliant' | 'non-compliant' | 'pending'
   lastChecked: Date
   evidence?: string[]
+  controlFamily?: string
+  benchmarkVersion?: string
+  category?: string
 }
 
 // Attack/Threat types
@@ -89,7 +92,7 @@ export interface Attack {
   sourceCode: string
   targetCountry: string
   targetCode: string
-  severity: 'critical' | 'high' | 'medium' | 'low'
+  severity: 'critical' | 'major' | 'minor'
   attackType: string
   timestamp: Date
   sourceCoords: [number, number] // [lat, lng]
@@ -139,4 +142,42 @@ export interface TableColumn<T> {
   sortable?: boolean
   width?: string
   render?: (value: any, row: T) => React.ReactNode
-} 
+}
+
+// CIS Benchmark types
+export interface BenchmarkCheck {
+  id: string
+  title: string
+  target: string
+  result: 'Passed' | 'Failed' | 'Not applicable'
+  description?: string
+  framework?: 'CIS' | 'NIST'
+  category?: string
+  severity?: 'critical' | 'major' | 'minor'
+}
+
+// NIST 800-53 types
+export interface NISTRequirement {
+  id: string
+  name: string
+  count: number
+  color: string
+  description?: string
+  controls?: string[]
+  category?: 'AC' | 'AU' | 'CA' | 'CM' | 'IA' | 'SA' | 'SC' | 'SI'
+}
+
+// Security Agent types
+export interface SecurityAgent {
+  id: string
+  name: string
+  ipAddress: string
+  operatingSystem: string
+  status: 'active' | 'inactive' | 'warning'
+  lastSeen: string
+  version: string
+  location: string
+  benchmarkChecks?: BenchmarkCheck[]
+  nistRequirements?: NISTRequirement[]
+  complianceScore?: number
+}

@@ -21,7 +21,7 @@ const threatIntelligence = [
   {
     id: '2',
     title: 'Ransomware Family: BlackCat',
-    severity: 'high',
+    severity: 'major',
     description: 'New variant detected with improved encryption methods',
     indicators: ['SHA256: abc123...', 'Port 445 exploitation'],
     timestamp: '15 minutes ago',
@@ -97,15 +97,15 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {[
                   { type: 'Critical Alert', message: 'Multiple failed login attempts detected', time: '2 minutes ago', severity: 'critical' },
-                  { type: 'System Update', message: 'Wazuh agent updated on server-01', time: '15 minutes ago', severity: 'info' },
-                  { type: 'Policy Violation', message: 'Unauthorized file access attempt', time: '1 hour ago', severity: 'high' },
-                  { type: 'Compliance Check', message: 'ISO 27001 audit completed successfully', time: '2 hours ago', severity: 'info' },
+                  { type: 'System Update', message: 'Wazuh agent updated on server-01', time: '15 minutes ago', severity: 'minor' },
+                  { type: 'Policy Violation', message: 'Unauthorized file access attempt', time: '1 hour ago', severity: 'major' },
+                  { type: 'Compliance Check', message: 'ISO 27001 audit completed successfully', time: '2 hours ago', severity: 'minor' },
                 ].map((activity, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className={`w-2 h-2 rounded-full mt-2 ${
                       activity.severity === 'critical' ? 'bg-red-500' :
-                      activity.severity === 'high' ? 'bg-orange-500' :
-                      'bg-blue-500'
+                      activity.severity === 'major' ? 'bg-orange-500' :
+                      'bg-yellow-500'
                     }`} />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                     </h4>
                     <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                       threat.severity === 'critical' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                      threat.severity === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
+                      threat.severity === 'major' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
                       'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                     }`}>
                       {threat.severity.toUpperCase()}

@@ -8,7 +8,7 @@ interface Ticket {
   id: string
   title: string
   status: 'open' | 'in-progress' | 'closed'
-  priority: 'critical' | 'high' | 'medium' | 'low'
+  priority: 'critical' | 'major' | 'minor'
   assignee: string
   reporter: string
   createdAt: string
@@ -32,7 +32,7 @@ const mockTickets: Ticket[] = [
     id: 'SIEM-2024-002',
     title: 'Review suspicious file modifications',
     status: 'open',
-    priority: 'high',
+    priority: 'major',
     assignee: 'Mike Rodriguez',
     reporter: 'Security Bot',
     createdAt: '4 hours ago',
@@ -43,7 +43,7 @@ const mockTickets: Ticket[] = [
     id: 'SIEM-2024-003',
     title: 'System performance monitoring alert',
     status: 'open',
-    priority: 'medium',
+    priority: 'minor',
     assignee: 'Alex Johnson',
     reporter: 'Monitoring System',
     createdAt: '6 hours ago',
@@ -53,7 +53,7 @@ const mockTickets: Ticket[] = [
     id: 'SIEM-2023-999',
     title: 'Monthly compliance report generation',
     status: 'closed',
-    priority: 'low',
+    priority: 'minor',
     assignee: 'Lisa Park',
     reporter: 'Compliance Team',
     createdAt: '1 day ago',
@@ -64,9 +64,8 @@ const mockTickets: Ticket[] = [
 const getPriorityColor = (priority: string) => {
   switch (priority) {
     case 'critical': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-    case 'high': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400'
-    case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-    case 'low': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+    case 'major': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400'
+    case 'minor': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
     default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
   }
 }

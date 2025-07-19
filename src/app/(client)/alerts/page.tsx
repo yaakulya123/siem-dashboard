@@ -4,31 +4,7 @@ import { useState, useEffect } from 'react'
 import { LiveAlertsTable } from '@/components/alerts/live-alerts-table'
 import { StatsOverview } from '@/components/dashboard/stats-overview'
 
-// export default function AlertsPage() {
-//   const [isClient, setIsClient] = useState(false)
-//   useEffect(() => {
-//     setIsClient(true);
-//   }, [])
 
-//   const [statsData, setStatsData] = useState(null)
-
-//   useEffect(() => {
-//     const fetchStats = async () => {
-//       try {
-//         const res = await fetch('http://localhost:4000/dashboard-metrics')
-//         const data = await res.json()
-//         setStatsData(data)
-//         console.log(data)
-//       } catch (err) {
-//         console.error('[✗] Error fetching dashboard metrics:', err)
-//       }
-//     }
-
-//     fetchStats() // initial fetch
-//     const interval = setInterval(fetchStats, 1000) // fetch every 3s
-
-//     return () => clearInterval(interval) // cleanup
-//   }, [])
 export default function AlertsPage() {
   const [isClient, setIsClient] = useState(false)
   const [statsData, setStatsData] = useState<any>(null)
@@ -43,7 +19,7 @@ export default function AlertsPage() {
         const res = await fetch('http://localhost:4000/dashboard-metrics')
         const data = await res.json()
         setStatsData(data)
-        console.log(data)
+        // console.log(data)
       } catch (err) {
         console.error('[✗] Error fetching dashboard metrics:', err)
       }
@@ -54,7 +30,6 @@ export default function AlertsPage() {
 
     return () => clearInterval(interval) // cleanup
   }, [])
-
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -74,13 +49,15 @@ export default function AlertsPage() {
       </div>
 
       {/* Quick Stats */}
-      {isClient && <StatsOverview data={statsData} />}
+      {/* <StatsOverview /> */}
+      {/* {isClient && <StatsOverview data={statsData} />} */}
 
       {/* Main Alerts Table */}
       <div className="card-gradient p-6 rounded-xl">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Alert Activity</h2>
         {/* <LiveAlertsTable /> */}
         {isClient && statsData?.alerts && <LiveAlertsTable alerts={statsData.alerts} />}
+
       </div>
     </div>
   )

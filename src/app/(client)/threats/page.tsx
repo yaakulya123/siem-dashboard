@@ -16,7 +16,7 @@ const threatIntelligence = [
   {
     id: '2',
     title: 'Ransomware Family: BlackCat',
-    severity: 'high',
+    severity: 'major',
     description: 'New variant detected with improved encryption methods',
     indicators: ['SHA256: abc123...', 'Port 445 exploitation'],
     timestamp: '15 minutes ago',
@@ -25,7 +25,7 @@ const threatIntelligence = [
   {
     id: '3',
     title: 'Phishing Campaign Wave',
-    severity: 'medium',
+    severity: 'minor',
     description: 'Large-scale phishing targeting financial institutions',
     indicators: ['fake-bank-login.com', 'credential harvesting'],
     timestamp: '1 hour ago',
@@ -106,7 +106,7 @@ export default function ThreatsPage() {
                   </h4>
                   <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                     threat.severity === 'critical' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    threat.severity === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
+                    threat.severity === 'major' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
                     'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                   }`}>
                     {threat.severity.toUpperCase()}

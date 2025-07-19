@@ -154,6 +154,176 @@ async function computeAverageComplianceScore() {
     }
 }
 
+// app.get('/agents-summary', async (req, res) => {
+//   try {
+//     const token = await getWazuhToken();
+
+//     const headers = {
+//       'Authorization': `Bearer ${token}`,
+//       'Accept': 'application/json'
+//     };
+
+//     const agentsResponse = await axiosInstance.get(`${WAZUH_HOST}/agents`, { headers });
+//     const agents = agentsResponse.data.data?.affected_items || [];
+
+//     const summary = {};
+
+//     for (const agent of agents) {
+//       const agentId = agent.id;
+//       const os = agent.os || {};
+//       const agentName = agent.name || 'Unknown Agent';
+
+//       const agentData = {
+//         name : agentName,
+//         ip: agent.ip,
+//         os_name: os.name,
+//         status: agent.status,
+//         // uname: os.uname,
+//         os_version: os.version
+//       };
+
+//       try {
+//         // Fetch SCA metadata (to get policy_id and score stats)
+//         const scaMetaResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}`, { headers });
+//         const scaItem = scaMetaResponse.data.data?.affected_items?.[0];
+
+//         if (scaItem?.policy_id) {
+//           const policyId = scaItem.policy_id;
+
+//           agentData.policy_id = policyId;
+//           agentData.score = scaItem.score;
+//           agentData.total_checks = scaItem.total_checks;
+//           agentData.pass = scaItem.pass;
+//           agentData.invalid = scaItem.invalid;
+//           agentData.fail = scaItem.fail;
+
+//           // Fetch SCA checks
+//           const checksResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}/checks/${policyId}`, { headers });
+//           const checks = checksResponse.data.data?.affected_items || [];
+
+//           agentData.cis_checks = checks.map(check => ({
+//             id: check.id,
+//             command: check.command,
+//             title: check.title,
+//             description: check.description,
+//             result: check.result
+//           }));
+//         }
+//       } catch (err) {
+//         console.warn(`[!] Could not fetch SCA info for agent ${agentId}: ${err.message}`);
+//       }
+
+//       summary[agentId] = agentData;
+//     }
+
+//     res.json({ agents: summary });
+
+//   } catch (err) {
+//     console.error('[✗] Error in /agents-summary:', err.message);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+
+app.get('/agents-summary', async (req, res) => {
+  try {
+    const token = await getWazuhToken();
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    };
+
+    const agentsResponse = await axiosInstance.get(`${WAZUH_HOST}/agents`, { headers });
+    const agents = agentsResponse.data.data?.affected_items || [];
+
+    const summary = {};
+
+    for (const agent of agents) {
+      const agentId = agent.id;
+      const os = agent.os || {};
+      const agentName = agent.name || 'Unknown Agent';
+
+      const agentData = {
+        name: agentName,
+        ip: agent.ip,
+        os_name: os.name,
+        status: agent.status,
+        os_version: os.version
+      };
+
+      try {
+        // Fetch SCA metadata
+        const scaMetaResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}`, { headers });
+        const scaItem = scaMetaResponse.data.data?.affected_items?.[0];
+
+        if (scaItem?.policy_id) {
+          const policyId = scaItem.policy_id;
+
+          agentData.policy_id = policyId;
+          agentData.score = scaItem.score;
+          agentData.total_checks = scaItem.total_checks;
+          agentData.pass = scaItem.pass;
+          agentData.invalid = scaItem.invalid;
+          agentData.fail = scaItem.fail;
+
+          // Fetch SCA checks
+          const checksResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}/checks/${policyId}`, { headers });
+          const checks = checksResponse.data.data?.affected_items || [];
+
+          agentData.cis_checks = checks.map(check => ({
+            id: check.id,
+            command: check.command,
+            title: check.title,
+            description: check.description,
+            result: check.result
+          }));
+        }
+      } catch (err) {
+        console.warn(`[!] Could not fetch SCA info for agent ${agentId}: ${err.message}`);
+      }
+
+      try {
+        // Fetch vulnerabilities from Elasticsearch
+        const elasticAuth = Buffer.from(`${INDEXER_USER}:${INDEXER_PASS}`).toString('base64');
+        const elasticResponse = await axiosInstance.get(
+          `${INDEXER_HOST}/wazuh-states-vulnerabilities-*/_search?q=agent.id:${agentId}`,
+          {
+            headers: {
+              'Authorization': `Basic ${elasticAuth}`,
+              'Accept': 'application/json'
+            }
+          }
+        );
+
+        const vulnHits = elasticResponse.data?.hits?.hits || [];
+
+        agentData.vulnerabilities = vulnHits.map(hit => {
+          const source = hit._source || {};
+          return {
+            name: source.package?.name,
+            id: source.vulnerability?.id,
+            severity: source.vulnerability?.score?.base
+          };
+        });
+      } catch (err) {
+        console.warn(`[!] Could not fetch vulnerabilities for agent ${agentId}: ${err.message}`);
+        agentData.vulnerabilities = [];
+      }
+
+      summary[agentId] = agentData;
+    }
+
+    res.json({ agents: summary });
+
+  } catch (err) {
+    console.error('[✗] Error in /agents-summary:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 /**
  * Dashboard metrics endpoint
  */
@@ -183,8 +353,8 @@ app.get('/dashboard-metrics', async (req, res) => {
                         ranges: [
                             { key: 'Info', to: 6 },
                             { key: 'Minor', from: 7, to: 11 },
-                            { key: 'Major', from: 11, to: 13 },
-                            { key: 'Critical', from: 13 }
+                            { key: 'Major', from: 11, to: 14 },
+                            { key: 'Critical', from: 14 }
                         ]
                     }
                 }
@@ -227,52 +397,59 @@ app.get('/dashboard-metrics', async (req, res) => {
         
         // === 5. Recent Alerts ===
         const alertsQuery = {
-            size: 5,
-            sort: [
-                { '@timestamp': { order: 'desc' } }
-            ],
-            _source: [
-                'rule.level',
-                'rule.description',
-                'rule.id',
-                'rule.groups',
-                '@timestamp',
-                'predecoder.hostname',
-                'agent.name',
-                'agent.id',
-                'full_log',
-                'location'
-            ]
-        };
-        
-        const authString = `${INDEXER_USER}:${INDEXER_PASS}`;
-        const authEncoded = Buffer.from(authString).toString('base64');
-        
-        const alertsResponse = await axiosInstance.post(
-            `${INDEXER_HOST}/wazuh-alerts*/_search`,
-            alertsQuery,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Basic ${authEncoded}`
-                }
+        query: {
+            range: {
+            "rule.level": {
+                gte: 8 // Only include alerts with level >= 8
             }
+            }
+        },
+        sort: [
+            { "@timestamp": { order: "desc" } }
+        ],
+        _source: [
+            "rule.level",
+            "rule.description",
+            "rule.id",
+            "rule.groups",
+            "@timestamp",
+            "predecoder.hostname",
+            "agent.name",
+            "agent.id",
+            "full_log",
+            "location"
+        ],
+        size: 10 // You can increase this or use scroll if expecting more than 10k alerts
+        };
+
+        const authString = `${INDEXER_USER}:${INDEXER_PASS}`;
+        const authEncoded = Buffer.from(authString).toString("base64");
+
+        const alertsResponse = await axiosInstance.post(
+        `${INDEXER_HOST}/wazuh-alerts*/_search`,
+        alertsQuery,
+        {
+            headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Basic ${authEncoded}`
+            }
+        }
         );
-        
+
         const alertsData = alertsResponse.data;
         const hits = alertsData.hits?.hits || [];
-        
+
         const alerts = hits.map(hit => {
-            const source = hit._source || {};
-            return {
-                severity: source.rule?.level,
-                alert_description: source.rule?.description,
-                time: source['@timestamp'],
-                host_name: source.predecoder?.hostname,
-                agent_name: source.agent?.name,
-                rule_groups: (source.rule?.groups || []).join(', ')
-            };
+        const source = hit._source || {};
+        return {
+            severity: source.rule?.level,
+            alert_description: source.rule?.description,
+            time: source["@timestamp"],
+            host_name: source.predecoder?.hostname,
+            agent_name: source.agent?.name,
+            rule_groups: (source.rule?.groups || []).join(", ")
+        };
         });
         
         // === 6. Last 24hr Alerts ===
@@ -296,8 +473,8 @@ app.get('/dashboard-metrics', async (req, res) => {
                         ranges: [
                             { key: 'Info', to: 7 },
                             { key: 'Minor', from: 7, to: 11 },
-                            { key: 'Major', from: 11, to: 13 },
-                            { key: 'Critical', from: 13 }
+                            { key: 'Major', from: 11, to: 14 },
+                            { key: 'Critical', from: 14 }
                         ]
                     }
                 }
