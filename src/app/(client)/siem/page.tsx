@@ -33,7 +33,7 @@ export default function SIEMPage() {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Wazuh SIEM Platform
+                SIEM Platform
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Full-featured security monitoring
@@ -76,7 +76,7 @@ export default function SIEMPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Platform Status</p>
-                <p className="text-lg font-semibold text-green-600 dark:text-green-400">Online</p>
+                <p className="text-lg font-semibold text-green-600 dark:text-green-400">O</p>
               </div>
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
             </div>
@@ -95,7 +95,7 @@ export default function SIEMPage() {
           <div className="card-gradient p-4 rounded-xl">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Events/Second</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Alerts (24hr)</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">1,247</p>
               </div>
               <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center">
@@ -112,8 +112,8 @@ export default function SIEMPage() {
           About Wazuh SIEM
         </h3>
         <p className="text-gray-600 dark:text-gray-400 mb-4">
-          Wazuh is a free, open source and enterprise-ready security monitoring solution for threat detection, 
-          integrity monitoring, incident response and compliance. It provides unified XDR and SIEM protection 
+          Wazuh is a free, open source and enterprise-ready security monitoring solution for threat detection,
+          integrity monitoring, incident response and compliance. It provides unified XDR and SIEM protection
           for endpoints and cloud workloads.
         </p>
         <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
