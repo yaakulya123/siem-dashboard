@@ -58,6 +58,9 @@ module.exports = {
           900: '#14532d',
         }
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'bounce-in': 'bounceIn 0.6s ease-out',

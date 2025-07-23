@@ -30,7 +30,7 @@ export default function RootLayout({
           <Toaster
             position="top-right"
             toastOptions={{
-              duration: 4000,
+              duration: 2000,
               style: {
                 background: 'var(--background)',
                 color: 'var(--foreground)',

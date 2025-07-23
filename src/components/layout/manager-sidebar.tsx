@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   BuildingOfficeIcon,
   ChartBarIcon, 
@@ -15,10 +15,21 @@ import {
   EyeIcon
 } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
+import { clearAuthSession } from '@/lib/auth';
+import toast from 'react-hot-toast';
 
 export default function ManagerSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    clearAuthSession()
+    toast.success('Successfully signed out', {
+      duration: 2000,
+    })
+    router.push('/manager-login')
+  }
 
   const navigation = [
     { 
@@ -118,7 +129,11 @@ export default function ManagerSidebar() {
           <EyeIcon className={clsx('w-5 h-5', !isCollapsed && 'mr-3')} />
           {!isCollapsed && 'Switch to Operator View'}
         </Link>
-        <button className="flex items-center w-full px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
+        <button 
+          onClick={handleSignOut}
+          className="flex items-center w-full px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+          title={isCollapsed ? 'Sign Out' : ''}
+        >
           <ArrowRightOnRectangleIcon className={clsx('w-5 h-5', !isCollapsed && 'mr-3')} />
           {!isCollapsed && 'Sign Out'}
         </button>

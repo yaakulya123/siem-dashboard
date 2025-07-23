@@ -10,10 +10,22 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { clearAuthSession } from '@/lib/auth';
+import toast from 'react-hot-toast';
 
 export default function ManagerHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    clearAuthSession()
+    toast.success('Successfully signed out', {
+      duration: 2000,
+    })
+    router.push('/manager-login')
+  }
 
   return (
     <header className="bg-gray-800 border-b border-gray-700 px-6 py-4">
@@ -117,7 +129,10 @@ export default function ManagerHeader() {
                     <ShieldCheckIcon className="mr-3 h-4 w-4" />
                     Switch to Operator View
                   </Link>
-                  <button className="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700 w-full text-left">
+                  <button 
+                    onClick={handleSignOut}
+                    className="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700 w-full text-left"
+                  >
                     <ArrowRightOnRectangleIcon className="mr-3 h-4 w-4" />
                     Sign Out
                   </button>

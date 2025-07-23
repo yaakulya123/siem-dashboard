@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { BellIcon } from '@heroicons/react/24/outline'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { clsx } from 'clsx'
+import { clearAuthSession } from '@/lib/auth'
+import toast from 'react-hot-toast'
 
 export function Header() {
   const [notifications] = useState([
@@ -13,7 +16,16 @@ export function Header() {
     { id: 3, message: 'System maintenance scheduled for tonight', time: '3 hours ago', read: true },
   ])
 
+  const router = useRouter()
   const unreadCount = notifications.filter(n => !n.read).length
+
+  const handleSignOut = () => {
+    clearAuthSession()
+    toast.success('Successfully signed out', {
+      duration: 2000,
+    })
+    router.push('/login')
+  }
 
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200/70 dark:border-gray-800/40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
@@ -142,15 +154,15 @@ export function Header() {
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <button
+                      onClick={handleSignOut}
                       className={clsx(
                         active ? 'bg-gray-50 dark:bg-gray-700/50' : '',
-                        'block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700/50'
+                        'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700/50'
                       )}
                     >
                       Sign out
-                    </a>
+                    </button>
                   )}
                 </Menu.Item>
               </Menu.Items>
