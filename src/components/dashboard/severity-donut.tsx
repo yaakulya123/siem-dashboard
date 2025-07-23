@@ -175,4 +175,4 @@ export function SeverityDonut({ data }: SeverityDonutProps) {
       </div>
     </div>
   )
-} 
+}

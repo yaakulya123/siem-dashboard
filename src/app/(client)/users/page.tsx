@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import {
   ArrowDownTrayIcon,
   ComputerDesktopIcon,
-  PlusIcon,
+  ArrowPathIcon,
   ServerIcon,
   GlobeAltIcon,
   CpuChipIcon,
@@ -117,12 +117,14 @@ export default function AgentsPage() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null)
   const [showAgentModal, setShowAgentModal] = useState(false)
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
   const [activeTab, setActiveTab] = useState<'dashboard' | 'cis' | 'vulnerabilities'>('dashboard')
   const [cisSearchTerm, setCisSearchTerm] = useState('')
   const [showQuarantineModal, setShowQuarantineModal] = useState(false)
   const [agentToQuarantine, setAgentToQuarantine] = useState<Agent | null>(null)
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState("");
+  const [isClient, setIsClient] = useState(false);
 
   const toggleAgentStatus = (agentId: string) => {
     setAgents(agents.map(agent =>
@@ -201,13 +203,10 @@ export default function AgentsPage() {
       )
       : []
 
-  // const filteredNistRequirements = nistRequirements.filter(req =>
-  //   req.name.toLowerCase().includes(nistSearchTerm.toLowerCase()) ||
-  //   req.id.toLowerCase().includes(nistSearchTerm.toLowerCase())
-  // )
-
-  useEffect(() => {
+  // Fetch agents function
+  const fetchAgents = () => {
     setLoading(true);
+    setFetchError("");
     fetch("http://localhost:4000/agents-summary")
       .then(res => {
         if (!res.ok) throw new Error("Agent fetch failed");
@@ -243,14 +242,21 @@ export default function AgentsPage() {
           setAgents([]);
         }
         setLoading(false);
+        setLastRefresh(new Date());
       })
       .catch(err => {
         setFetchError(String(err));
         setLoading(false);
       });
+  };
+
+  // Call fetchAgents on page load
+  useEffect(() => {
+    setIsClient(true);
+    fetchAgents();
   }, []);
 
-  if (loading) return <div>Loading agent data...</div>;
+  // if (loading) return <div>Loading agent data...</div>;
   if (fetchError) return <div style={{ color: "red" }}>Error: {fetchError}</div>;
 
   return (
@@ -265,19 +271,32 @@ export default function AgentsPage() {
           </p>
         </div>
         <button
+          onClick={fetchAgents}
+          className="inline-flex ml-4 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+          disabled={loading}
+        >
+          <ArrowPathIcon className="w-4 h-4 mr-2" />
+          {loading ? 'Refreshing...' : 'Refresh'}
+        </button>
+
+
+        {/* <button
           onClick={() => setShowAddModal(true)}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
         >
           <PlusIcon className="w-4 h-4 mr-2" />
           Add Agent
-        </button>
+        </button> */}
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Security Agents ({agents.length})
           </h3>
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            Last updated: {isClient ? lastRefresh.toLocaleTimeString() : ''}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

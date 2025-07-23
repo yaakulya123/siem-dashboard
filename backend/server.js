@@ -154,76 +154,6 @@ async function computeAverageComplianceScore() {
     }
 }
 
-// app.get('/agents-summary', async (req, res) => {
-//   try {
-//     const token = await getWazuhToken();
-
-//     const headers = {
-//       'Authorization': `Bearer ${token}`,
-//       'Accept': 'application/json'
-//     };
-
-//     const agentsResponse = await axiosInstance.get(`${WAZUH_HOST}/agents`, { headers });
-//     const agents = agentsResponse.data.data?.affected_items || [];
-
-//     const summary = {};
-
-//     for (const agent of agents) {
-//       const agentId = agent.id;
-//       const os = agent.os || {};
-//       const agentName = agent.name || 'Unknown Agent';
-
-//       const agentData = {
-//         name : agentName,
-//         ip: agent.ip,
-//         os_name: os.name,
-//         status: agent.status,
-//         // uname: os.uname,
-//         os_version: os.version
-//       };
-
-//       try {
-//         // Fetch SCA metadata (to get policy_id and score stats)
-//         const scaMetaResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}`, { headers });
-//         const scaItem = scaMetaResponse.data.data?.affected_items?.[0];
-
-//         if (scaItem?.policy_id) {
-//           const policyId = scaItem.policy_id;
-
-//           agentData.policy_id = policyId;
-//           agentData.score = scaItem.score;
-//           agentData.total_checks = scaItem.total_checks;
-//           agentData.pass = scaItem.pass;
-//           agentData.invalid = scaItem.invalid;
-//           agentData.fail = scaItem.fail;
-
-//           // Fetch SCA checks
-//           const checksResponse = await axiosInstance.get(`${WAZUH_HOST}/sca/${agentId}/checks/${policyId}`, { headers });
-//           const checks = checksResponse.data.data?.affected_items || [];
-
-//           agentData.cis_checks = checks.map(check => ({
-//             id: check.id,
-//             command: check.command,
-//             title: check.title,
-//             description: check.description,
-//             result: check.result
-//           }));
-//         }
-//       } catch (err) {
-//         console.warn(`[!] Could not fetch SCA info for agent ${agentId}: ${err.message}`);
-//       }
-
-//       summary[agentId] = agentData;
-//     }
-
-//     res.json({ agents: summary });
-
-//   } catch (err) {
-//     console.error('[✗] Error in /agents-summary:', err.message);
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
 
 app.get('/agents-summary', async (req, res) => {
   try {
@@ -241,6 +171,7 @@ app.get('/agents-summary', async (req, res) => {
 
     for (const agent of agents) {
       const agentId = agent.id;
+      if (agentId === '000') continue; // Skip agent with id '000'
       const os = agent.os || {};
       const agentName = agent.name || 'Unknown Agent';
 
@@ -397,62 +328,62 @@ app.get('/dashboard-metrics', async (req, res) => {
         );
         const wazuhHealthData = wazuhHealthResponse.data;
         
-        // === 5. Recent Alerts ===
-        const alertsQuery = {
-        query: {
-            range: {
-            "rule.level": {
-                gte: 8 // Only include alerts with level >= 8
-            }
-            }
-        },
-        sort: [
-            { "@timestamp": { order: "desc" } }
-        ],
-        _source: [
-            "rule.level",
-            "rule.description",
-            "rule.id",
-            "rule.groups",
-            "@timestamp",
-            "predecoder.hostname",
-            "agent.name",
-            "agent.id",
-            "full_log",
-            "location"
-        ],
-        size: 10 // You can increase this or use scroll if expecting more than 10k alerts
-        };
+        // // === 5. Recent Alerts ===
+        // const alertsQuery = {
+        // query: {
+        //     range: {
+        //     "rule.level": {
+        //         gte: 8 // Only include alerts with level >= 8
+        //     }
+        //     }
+        // },
+        // sort: [
+        //     { "@timestamp": { order: "desc" } }
+        // ],
+        // _source: [
+        //     "rule.level",
+        //     "rule.description",
+        //     "rule.id",
+        //     "rule.groups",
+        //     "@timestamp",
+        //     "predecoder.hostname",
+        //     "agent.name",
+        //     "agent.id",
+        //     "full_log",
+        //     "location"
+        // ],
+        // size: 15 // You can increase this or use scroll if expecting more than 10k alerts
+        // };
 
-        const authString = `${INDEXER_USER}:${INDEXER_PASS}`;
-        const authEncoded = Buffer.from(authString).toString("base64");
+        // const authString = `${INDEXER_USER}:${INDEXER_PASS}`;
+        // const authEncoded = Buffer.from(authString).toString("base64");
 
-        const alertsResponse = await axiosInstance.post(
-        `${INDEXER_HOST}/wazuh-alerts*/_search`,
-        alertsQuery,
-        {
-            headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Basic ${authEncoded}`
-            }
-        }
-        );
+        // const alertsResponse = await axiosInstance.post(
+        // `${INDEXER_HOST}/wazuh-alerts*/_search`,
+        // alertsQuery,
+        // {
+        //     headers: {
+        //     "Content-Type": "application/json",
+        //     "Accept": "application/json",
+        //     "Authorization": `Basic ${authEncoded}`
+        //     }
+        // }
+        // );
 
-        const alertsData = alertsResponse.data;
-        const hits = alertsData.hits?.hits || [];
+        // const alertsData = alertsResponse.data;
+        // const hits = alertsData.hits?.hits || [];
 
-        const alerts = hits.map(hit => {
-        const source = hit._source || {};
-        return {
-            severity: source.rule?.level,
-            alert_description: source.rule?.description,
-            time: source["@timestamp"],
-            host_name: source.predecoder?.hostname,
-            agent_name: source.agent?.name,
-            rule_groups: (source.rule?.groups || []).join(", ")
-        };
-        });
+        // const alerts = hits.map(hit => {
+        // const source = hit._source || {};
+        // return {
+        //     severity: source.rule?.level,
+        //     alert_description: source.rule?.description,
+        //     time: source["@timestamp"],
+        //     host_name: source.predecoder?.hostname,
+        //     agent_name: source.agent?.name,
+        //     rule_groups: (source.rule?.groups || []).join(", ")
+        // };
+        // });
         
         // === 6. Last 24hr Alerts ===
         const now = new Date();
@@ -473,7 +404,7 @@ app.get('/dashboard-metrics', async (req, res) => {
                     range: {
                         field: 'rule.level',
                         ranges: [
-                            { key: 'Info', to: 7 },
+                            // { key: 'Info', to: 7 },
                             { key: 'Minor', from: 7, to: 11 },
                             { key: 'Major', from: 11, to: 14 },
                             { key: 'Critical', from: 14 }
@@ -503,9 +434,9 @@ app.get('/dashboard-metrics', async (req, res) => {
         const alertsLast24hr = severityBuckets.reduce((sum, bucket) => sum + bucket.doc_count, 0);
         
         const criticalAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Critical')?.doc_count || 0;
-        const highAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Major')?.doc_count || 0;
-        const mediumAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Minor')?.doc_count || 0;
-        const lowAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Info')?.doc_count || 0;
+        const majorAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Major')?.doc_count || 0;
+        const minorAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Minor')?.doc_count || 0;
+        // const infoAlertsLast24hr = severityBuckets.find(bucket => bucket.key === 'Info')?.doc_count || 0;
         
         const activeAgents = agentSummary.data?.connection?.active || 0;
         const wazuhHealth = wazuhHealthData.data?.affected_items?.[0]?.status;
@@ -514,16 +445,15 @@ app.get('/dashboard-metrics', async (req, res) => {
             total_alerts: totalAlerts,
             alerts_last_24hr: alertsLast24hr,
             critical_alerts: criticalAlertsLast24hr,
-            high_alerts: highAlertsLast24hr,
-            medium_alerts: mediumAlertsLast24hr,
-            low_alerts: lowAlertsLast24hr,
+            major_alerts: majorAlertsLast24hr,
+            minor_alerts: minorAlertsLast24hr,
+            // info_alerts: infoAlertsLast24hr,
             open_tickets: 0,  // Placeholder
             resolved_today: 0,  // Placeholder
             avg_response_time: '0s',  // Placeholder
             compliance_score: `${complianceScore}%`,
             active_agents: activeAgents,
-            wazuh_health: wazuhHealth,
-            alerts: alerts
+            wazuh_health: wazuhHealth
         });
         
     } catch (error) {
@@ -532,6 +462,71 @@ app.get('/dashboard-metrics', async (req, res) => {
     }
 });
 
+
+app.get('/alerts', async (req, res) => {
+  try {
+    const authString = `${INDEXER_USER}:${INDEXER_PASS}`;
+    const authEncoded = Buffer.from(authString).toString("base64");
+
+    const alertsQuery = {
+      query: {
+        range: {
+          "rule.level": {
+            gte: 8 // Only include alerts with level >= 8
+          }
+        }
+      },
+      sort: [
+        { "@timestamp": { order: "desc" } }
+      ],
+      _source: [
+        "rule.level",
+        "rule.description",
+        "rule.id",
+        "rule.groups",
+        "@timestamp",
+        "predecoder.hostname",
+        "agent.name",
+        "agent.id",
+        "full_log",
+        "location"
+      ],
+      size: 25 // Adjust as needed
+    };
+
+    const alertsResponse = await axiosInstance.post(
+      `${INDEXER_HOST}/wazuh-alerts*/_search`,
+      alertsQuery,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Basic ${authEncoded}`
+        }
+      }
+    );
+
+    const alertsData = alertsResponse.data;
+    const hits = alertsData.hits?.hits || [];
+
+    const alerts = hits.map(hit => {
+      const source = hit._source || {};
+      return {
+        severity: source.rule?.level,
+        alert_description: source.rule?.description,
+        time: source["@timestamp"],
+        host_name: source.predecoder?.hostname,
+        agent_name: source.agent?.name,
+        rule_groups: (source.rule?.groups || []).join(", ")
+      };
+    });
+
+    res.json({ alerts });
+  } catch (error) {
+    console.error('Alerts route error:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {

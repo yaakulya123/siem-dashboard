@@ -2,34 +2,40 @@
 
 import { useState, useEffect } from 'react'
 import { LiveAlertsTable } from '@/components/alerts/live-alerts-table'
-import { StatsOverview } from '@/components/dashboard/stats-overview'
+// import { StatsOverview } from '@/components/dashboard/stats-overview'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
 
 export default function AlertsPage() {
   const [isClient, setIsClient] = useState(false)
   const [statsData, setStatsData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    setIsClient(true);
-  }, [])
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await fetch('http://localhost:4000/dashboard-metrics')
-        const data = await res.json()
-        setStatsData(data)
-        // console.log(data)
-      } catch (err) {
-        console.error('[✗] Error fetching dashboard metrics:', err)
-      }
+  const fetchStats = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:4000/alerts')
+      const data = await res.json()
+      setStatsData(data)
+    } catch (err) {
+      console.error('[✗] Error fetching alerts:', err)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
+    setIsClient(true)
     fetchStats() // initial fetch
-    const interval = setInterval(fetchStats, 1000) // fetch every 1s
-
-    return () => clearInterval(interval) // cleanup
   }, [])
+
+  // Fetch on browser refresh
+  useEffect(() => {
+    const handleRefresh = () => fetchStats()
+    window.addEventListener('beforeunload', handleRefresh)
+    return () => window.removeEventListener('beforeunload', handleRefresh)
+  }, [])
+
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -43,22 +49,24 @@ export default function AlertsPage() {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500 dark:text-gray-400">Last updated:</span>
-          <span className="text-sm font-medium text-gray-900 dark:text-white">Just now</span>
+          {/* <span className="text-sm text-gray-500 dark:text-gray-400">Last updated:</span>
+          <span className="text-sm font-medium text-gray-900 dark:text-white">Just now</span> */}
+          <button
+            onClick={fetchStats}
+            className="inline-flex ml-4 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+            disabled={loading}
+          >
+            <ArrowPathIcon className="w-4 h-4 mr-2" />
+            {loading ? 'Refreshing...' : 'Refresh'}
+          </button>
         </div>
       </div>
-
-      {/* Quick Stats */}
-      {/* <StatsOverview /> */}
-      {/* {isClient && <StatsOverview data={statsData} />} */}
 
       {/* Main Alerts Table */}
       <div className="card-gradient p-6 rounded-xl">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Alert Activity</h2>
-        {/* <LiveAlertsTable /> */}
         {isClient && statsData?.alerts && <LiveAlertsTable alerts={statsData.alerts} />}
-
       </div>
     </div>
   )
-} 
+}

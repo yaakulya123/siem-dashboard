@@ -60,7 +60,7 @@ const mapSeverity = (level: number): Alert['severity'] => {
 export function LiveAlertsTable({ alerts }: LiveAlertsTableProps) {
   const [mappedAlerts, setMappedAlerts] = useState<Alert[]>([])
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
-  const [statusFilter, setStatusFilter] = useState<'all' | 'open' | 'investigating' | 'resolved'>('all')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'open' | 'investigating' | 'resolved' | 'critical' | 'major' | 'minor'>('all')
   const [isClient, setIsClient] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const alertsPerPage = 10
@@ -69,11 +69,21 @@ export function LiveAlertsTable({ alerts }: LiveAlertsTableProps) {
   const openCount = mappedAlerts.filter(alert => alert.status === 'open').length
   const investigatingCount = mappedAlerts.filter(alert => alert.status === 'investigating').length
   const resolvedCount = mappedAlerts.filter(alert => alert.status === 'resolved').length
+  const criticalCount = mappedAlerts.filter(alert => alert.severity === 'critical').length
+  const majorCount = mappedAlerts.filter(alert => alert.severity === 'major').length
+  const minorCount = mappedAlerts.filter(alert => alert.severity === 'minor').length
 
   // Filter alerts based on selected status
-  const filteredAlerts = statusFilter === 'all'
-    ? mappedAlerts
-    : mappedAlerts.filter(alert => alert.status === statusFilter)
+  const filteredAlerts =
+    statusFilter === 'all'
+      ? mappedAlerts
+      : statusFilter === 'critical'
+        ? mappedAlerts.filter(alert => alert.severity === 'critical')
+        : statusFilter === 'major'
+          ? mappedAlerts.filter(alert => alert.severity === 'major')
+          : statusFilter === 'minor'
+            ? mappedAlerts.filter(alert => alert.severity === 'minor')
+            : mappedAlerts.filter(alert => alert.status === statusFilter)
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredAlerts.length / alertsPerPage)
@@ -117,69 +127,111 @@ export function LiveAlertsTable({ alerts }: LiveAlertsTableProps) {
             <div className="status-dot active"></div>
             <span className="text-sm font-medium text-green-600 dark:text-green-400">Live monitoring</span>
           </div>
-
-          {/* Status Counters with Filtering */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'all' ? 'all' : 'all')}
-              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'all'
-                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 shadow-sm'
-                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
-                }`}
-            >
-              <div className="w-2.5 h-2.5 bg-gray-400 rounded-full"></div>
-              <span>All</span>
-              <span className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-semibold">
-                {alerts.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'open' ? 'all' : 'open')}
-              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'open'
-                ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-400 shadow-sm'
-                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-200 dark:hover:border-red-800/30 hover:shadow-sm'
-                }`}
-            >
-              <div className="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-              <span>Open</span>
-              <span className="bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
-                {openCount}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'investigating' ? 'all' : 'investigating')}
-              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'investigating'
-                ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800/50 text-yellow-700 dark:text-yellow-400 shadow-sm'
-                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/10 hover:border-yellow-200 dark:hover:border-yellow-800/30 hover:shadow-sm'
-                }`}
-            >
-              <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
-              <span>Investigating</span>
-              <span className="bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
-                {investigatingCount}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'resolved' ? 'all' : 'resolved')}
-              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'resolved'
-                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/50 text-green-700 dark:text-green-400 shadow-sm'
-                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/10 hover:border-green-200 dark:hover:border-green-800/30 hover:shadow-sm'
-                }`}
-            >
-              <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-              <span>Resolved</span>
-              <span className="bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
-                {resolvedCount}
-              </span>
-            </button>
-          </div>
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Last updated: {lastRefresh.toLocaleTimeString()}
+          Last updated: {lastRefresh.toLocaleTimeString() || '...'}
         </div>
+      </div>
+      {/* Status Counters with Filtering */}
+      <div className="flex items-center space-x-3">
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'all' ? 'all' : 'all')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'all'
+            ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-gray-400 rounded-full"></div>
+          <span>All</span>
+          <span className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {alerts.length}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'open' ? 'all' : 'open')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'open'
+            ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-200 dark:hover:border-red-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+          <span>Open</span>
+          <span className="bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {openCount}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'investigating' ? 'all' : 'investigating')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'investigating'
+            ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800/50 text-yellow-700 dark:text-yellow-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/10 hover:border-yellow-200 dark:hover:border-yellow-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
+          <span>Investigating</span>
+          <span className="bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {investigatingCount}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'resolved' ? 'all' : 'resolved')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'resolved'
+            ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/50 text-green-700 dark:text-green-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/10 hover:border-green-200 dark:hover:border-green-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
+          <span>Resolved</span>
+          <span className="bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {resolvedCount}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'critical' ? 'all' : 'critical')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'critical'
+            ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-200 dark:hover:border-red-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+          <span>Critical</span>
+          <span className="bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {criticalCount}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'major' ? 'all' : 'major')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'major'
+            ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800/50 text-orange-700 dark:text-orange-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:border-orange-200 dark:hover:border-orange-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-orange-500 rounded-full"></div>
+          <span>Major</span>
+          <span className="bg-orange-100 dark:bg-orange-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {majorCount}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setStatusFilter(statusFilter === 'minor' ? 'all' : 'minor')}
+          className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 border ${statusFilter === 'minor'
+            ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800/50 text-yellow-700 dark:text-yellow-400 shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/10 hover:border-yellow-200 dark:hover:border-yellow-800/30 hover:shadow-sm'
+            }`}
+        >
+          <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
+          <span>Minor</span>
+          <span className="bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-semibold">
+            {minorCount}
+          </span>
+        </button>
+
       </div>
 
       <div className="overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-md">
