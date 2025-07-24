@@ -3,6 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 const https = require('https');
 const dotenv = require('dotenv');
+const redis = require('redis');
 
 // Load environment variables
 dotenv.config(); // for .env in the root directory
@@ -527,6 +528,13 @@ app.get('/alerts', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Redis client setup
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+});
+
+redisClient.connect().catch(console.error);
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
