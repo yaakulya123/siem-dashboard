@@ -15,13 +15,6 @@ const USERS = [
     role: 'manager' as const, 
     fullName: 'Alex Thompson',
     department: 'SOC Management'
-  },
-  {
-    username: 'admin',
-    password: 'admin',
-    role: 'manager' as const,
-    fullName: 'Sarah Chen', 
-    department: 'Executive Team'
   }
 ]
 
