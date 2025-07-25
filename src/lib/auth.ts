@@ -1,19 +1,39 @@
 'use client'
 
-// Hardcoded credentials
-const CREDENTIALS = {
-  username: 'codec',
-  password: 'codec'
-}
+// Demo users with different roles for RBAC
+const USERS = [
+  {
+    username: 'codec',
+    password: 'codec', 
+    role: 'client' as const,
+    fullName: 'John Anderson',
+    department: 'Security Operations'
+  },
+  {
+    username: 'manager',
+    password: 'manager',
+    role: 'manager' as const, 
+    fullName: 'Alex Thompson',
+    department: 'SOC Management'
+  }
+]
 
 export interface User {
   username: string
   role: 'client' | 'manager'
+  fullName: string
+  department: string
 }
 
-export const authenticate = (username: string, password: string, role: 'client' | 'manager'): User | null => {
-  if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
-    return { username, role }
+export const authenticate = (username: string, password: string): User | null => {
+  const user = USERS.find(u => u.username === username && u.password === password)
+  if (user) {
+    return {
+      username: user.username,
+      role: user.role,
+      fullName: user.fullName,
+      department: user.department
+    }
   }
   return null
 }

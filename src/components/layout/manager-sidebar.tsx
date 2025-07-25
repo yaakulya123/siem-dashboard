@@ -28,7 +28,7 @@ export default function ManagerSidebar() {
     toast.success('Successfully signed out', {
       duration: 2000,
     })
-    router.push('/manager-login')
+    router.push('/login')
   }
 
   const navigation = [

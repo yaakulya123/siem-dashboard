@@ -10,15 +10,16 @@ export default function RootPage() {
   useEffect(() => {
     const user = getAuthSession();
     
+    // Use replace instead of push for cleaner history
     if (!user) {
       // Not authenticated, redirect to login
-      router.push('/login');
+      router.replace('/login');
     } else if (user.role === 'manager') {
       // Manager user, redirect to manager dashboard
-      router.push('/manager');
+      router.replace('/manager');
     } else {
       // Client user, redirect to client dashboard
-      router.push('/dashboard');
+      router.replace('/dashboard');
     }
   }, [router]);
   
@@ -27,6 +28,9 @@ export default function RootPage() {
       <div className="text-center">
         <h1 className="text-2xl font-bold text-white mb-4">Redirecting...</h1>
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p className="text-gray-400 text-sm mt-4">
+          Taking you to the login page...
+        </p>
       </div>
     </div>
   );
