@@ -68,140 +68,146 @@ export default function UnifiedLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Enhanced Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Animated background grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20"></div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Enhanced Background with Animations */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+        {/* Animated Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoLTR2Mmg0djRoMnYtNGg0di0yaC00em0wLTMwVjBoLTJ2NGgtNHYyaDR2NGgyVjZoNFY0aC00ek02IDM0di00SDR2NGgwdjJoNHY0aDJ2LTRoNHYtMkg2ek02IDRWMEg0djRIMHYyaDR2NGgyVjZoNFY0SDZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20 animate-pulse"></div>
         
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400 rounded-full opacity-40 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-3/4 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-50 animate-pulse delay-2000"></div>
+        {/* Floating Particles */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-float opacity-60"></div>
+        <div className="absolute top-3/4 left-1/3 w-3 h-3 bg-cyan-400 rounded-full animate-float opacity-40" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-blue-300 rounded-full animate-float opacity-80" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-indigo-400 rounded-full animate-float opacity-50" style={{animationDelay: '0.5s'}}></div>
         
-        {/* Gradient orbs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-blue-600/10 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-radial from-purple-600/10 to-transparent rounded-full blur-3xl"></div>
+        {/* Gradient Orbs */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-radial from-blue-600/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-radial from-indigo-600/20 to-transparent rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
         
-        {/* Moving background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/3 -left-24 w-48 h-48 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-xl animate-float"></div>
-          <div className="absolute bottom-1/3 -right-24 w-64 h-64 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-full blur-xl animate-float delay-1000"></div>
-        </div>
+        {/* Moving Elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent skew-y-12 -translate-x-full animate-pulse"></div>
       </div>
 
-      <div className="w-full max-w-md relative z-10">
-        {/* Main Login Card */}
-        <div className="bg-gray-800/90 backdrop-blur-xl border border-gray-600/50 rounded-2xl shadow-2xl p-8 relative">
-          {/* Subtle inner glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-2xl"></div>
-          
-          <div className="relative z-10">
+      {/* Login Form Container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-md">
+          {/* Login Card */}
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8 animate-fade-in">
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
-                    <ShieldCheckIcon className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="absolute -inset-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl blur-lg"></div>
+              <div className="flex justify-center mb-4">
+                <div className="p-3 bg-blue-600/20 rounded-full backdrop-blur-sm border border-blue-400/30">
+                  <ShieldCheckIcon className="w-8 h-8 text-blue-400" />
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-white mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
-                Codec Networks
-              </h1>
-              <p className="text-gray-400 text-base font-medium">
-                Security Operations Center
-              </p>
-              <p className="text-gray-500 text-sm mt-2">
-                Please sign in to access your dashboard
-              </p>
+              <h1 className="text-3xl font-bold text-white mb-2">SIEM Dashboard</h1>
+              <p className="text-blue-200/80 text-sm">Secure Access Portal</p>
             </div>
 
-            {/* Form */}
+            {/* Login Form */}
             <form onSubmit={handleLogin} className="space-y-6">
-              {/* Username Field */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Username</label>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <UserIcon className="h-5 w-5 text-gray-500 group-focus-within:text-blue-400 transition-colors" />
-                  </div>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 bg-gray-700/50 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300"
-                    placeholder="Enter your username"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Password</label>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <LockClosedIcon className="h-5 w-5 text-gray-500 group-focus-within:text-blue-400 transition-colors" />
-                  </div>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-14 py-4 bg-gray-700/50 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300"
-                    placeholder="Enter your password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Error Message */}
               {error && (
-                <div className="flex items-center space-x-3 text-red-300 bg-red-500/10 border border-red-500/20 rounded-xl p-4 backdrop-blur-sm animate-fade-in">
-                  <ExclamationCircleIcon className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-sm font-medium">{error}</span>
+                <div className="flex items-center space-x-2 p-3 bg-red-500/20 border border-red-400/30 rounded-lg backdrop-blur-sm">
+                  <ExclamationCircleIcon className="w-5 h-5 text-red-400" />
+                  <span className="text-red-200 text-sm">{error}</span>
                 </div>
               )}
+
+              <div className="space-y-4">
+                {/* Username Field */}
+                <div>
+                  <label className="block text-sm font-medium text-blue-200 mb-2">
+                    Username
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <UserIcon className="h-5 w-5 text-blue-400/60" />
+                    </div>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent backdrop-blur-sm transition-all"
+                      placeholder="Enter your username"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label className="block text-sm font-medium text-blue-200 mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <LockClosedIcon className="h-5 w-5 text-blue-400/60" />
+                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent backdrop-blur-sm transition-all"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-400/60 hover:text-blue-400 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeSlashIcon className="h-5 w-5" />
+                      ) : (
+                        <EyeIcon className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               {/* Login Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
+                className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 backdrop-blur-sm"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-white/10 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 {isLoading ? (
-                  <div className="flex items-center justify-center space-x-3 relative z-10">
+                  <div className="flex items-center justify-center space-x-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span>Authenticating...</span>
+                    <span>Signing in...</span>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center space-x-3 relative z-10">
-                    <ShieldCheckIcon className="w-5 h-5" />
-                    <span>Access Dashboard</span>
-                  </div>
+                  'Sign In'
                 )}
               </button>
-
-              {/* RBAC Info */}
-              <div className="text-center pt-4 border-t border-gray-600/50">
-                <p className="text-gray-500 text-xs">
-                  Access level determined by user role and permissions
-                </p>
-              </div>
             </form>
+
+            {/* RBAC Info */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-center text-blue-200/60 text-xs mb-4">
+                Role-Based Access Control (RBAC) - Single unified login
+              </p>
+              
+              {/* Demo Accounts */}
+              <div className="bg-white/5 border border-white/10 rounded-lg p-4 backdrop-blur-sm">
+                <h4 className="text-sm font-medium text-blue-200 mb-3">Demo Accounts:</h4>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between items-center text-blue-200/80">
+                    <span>Client Access:</span>
+                    <code className="bg-white/10 px-2 py-1 rounded text-blue-300">codec / codec</code>
+                  </div>
+                  <div className="flex justify-between items-center text-blue-200/80">
+                    <span>Manager Access:</span>
+                    <code className="bg-white/10 px-2 py-1 rounded text-blue-300">manager / manager</code>
+                  </div>
+                  <div className="flex justify-between items-center text-blue-200/80">
+                    <span>Admin Access:</span>
+                    <code className="bg-white/10 px-2 py-1 rounded text-blue-300">admin / admin</code>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

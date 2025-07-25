@@ -1,6 +1,6 @@
 'use client'
 
-// Demo users with different roles for RBAC
+// Demo users with different roles for RBAC demonstration
 const USERS = [
   {
     username: 'codec',
@@ -15,6 +15,13 @@ const USERS = [
     role: 'manager' as const, 
     fullName: 'Alex Thompson',
     department: 'SOC Management'
+  },
+  {
+    username: 'admin',
+    password: 'admin',
+    role: 'manager' as const,
+    fullName: 'Sarah Chen', 
+    department: 'Executive Team'
   }
 ]
 
@@ -63,4 +70,18 @@ export const isAuthenticated = (requiredRole?: 'client' | 'manager'): boolean =>
   if (!user) return false
   if (requiredRole && user.role !== requiredRole) return false
   return true
+}
+
+// Helper function to check if user has specific permissions
+export const hasPermission = (permission: string): boolean => {
+  const user = getAuthSession()
+  if (!user) return false
+  
+  // Define role-based permissions
+  const permissions = {
+    client: ['view_dashboard', 'view_alerts', 'create_tickets', 'view_reports'],
+    manager: ['view_dashboard', 'view_alerts', 'create_tickets', 'view_reports', 'manage_users', 'view_analytics', 'system_config']
+  }
+  
+  return permissions[user.role]?.includes(permission) || false
 }
