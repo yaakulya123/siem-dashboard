@@ -10,10 +10,10 @@ import {
   LockClosedIcon,
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline'
-import { authenticate, setAuthSession, isAuthenticated } from '@/lib/auth'
+import { authenticate, setAuthSession, isAuthenticated, getAuthSession } from '@/lib/auth'
 import toast from 'react-hot-toast'
 
-export default function ClientLogin() {
+export default function UnifiedLogin() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -22,9 +22,14 @@ export default function ClientLogin() {
   const router = useRouter()
 
   useEffect(() => {
-    // Redirect if already authenticated as client
-    if (isAuthenticated('client')) {
-      router.push('/dashboard')
+    // Redirect if already authenticated based on role
+    const user = getAuthSession()
+    if (user) {
+      if (user.role === 'manager') {
+        router.push('/manager')
+      } else {
+        router.push('/dashboard')
+      }
     }
   }, [router])
 
@@ -36,14 +41,24 @@ export default function ClientLogin() {
     // Simulate loading delay for better UX
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    const user = authenticate(username, password, 'client')
+    // Authenticate user - role is determined by the user's credentials
+    const user = authenticate(username, password)
     
     if (user) {
       setAuthSession(user)
-      toast.success('Welcome to Codec Networks SIEM Dashboard!', {
-        duration: 2000,
-      })
-      router.push('/dashboard')
+      
+      // Role-based success messages and redirects
+      if (user.role === 'manager') {
+        toast.success(`Welcome ${user.fullName}! Accessing SOC Management Console...`, {
+          duration: 2000,
+        })
+        router.push('/manager')
+      } else {
+        toast.success(`Welcome ${user.fullName}! Accessing SIEM Dashboard...`, {
+          duration: 2000,
+        })
+        router.push('/dashboard')
+      }
     } else {
       setError('Invalid credentials. Please try again.')
       toast.error('Login failed. Please check your credentials.')
@@ -96,7 +111,10 @@ export default function ClientLogin() {
                 Codec Networks
               </h1>
               <p className="text-gray-400 text-base font-medium">
-                AI-Powered SIEM Dashboard
+                Security Operations Center
+              </p>
+              <p className="text-gray-500 text-sm mt-2">
+                Please sign in to access your dashboard
               </p>
             </div>
 
@@ -172,30 +190,31 @@ export default function ClientLogin() {
                 ) : (
                   <div className="flex items-center justify-center space-x-3 relative z-10">
                     <ShieldCheckIcon className="w-5 h-5" />
-                    <span>Access Dashboard</span>
+                    <span>Sign In</span>
                   </div>
                 )}
               </button>
 
-              {/* Manager Link */}
-              <div className="text-center pt-6 border-t border-gray-600/50">
-                <p className="text-gray-400 text-sm mb-3">SOC Team Member?</p>
-                <button
-                  type="button"
-                  onClick={() => router.push('/manager-login')}
-                  className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors group"
-                >
-                  <span className="border-b border-blue-400/30 group-hover:border-blue-300/50 transition-colors">
-                    Access Manager Dashboard →
-                  </span>
-                </button>
+              {/* Info Text */}
+              <div className="text-center pt-4 border-t border-gray-600/50">
+                <p className="text-gray-500 text-xs mb-3">
+                  Access level determined by user role and permissions
+                </p>
+                
+                {/* Demo Accounts Info */}
+                <div className="bg-blue-500/5 border border-blue-500/20 rounded-lg p-3">
+                  <p className="text-xs text-blue-300 font-medium mb-2">Demo Accounts:</p>
+                  <div className="text-xs text-gray-400 space-y-1">
+                    <div>👤 <code className="text-blue-300">codec/codec</code> - Client Access</div>
+                    <div>👑 <code className="text-purple-300">manager/manager</code> - Manager Access</div>
+                    <div>⚡ <code className="text-cyan-300">admin/admin</code> - Admin Access</div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-
     </div>
   )
 } 

@@ -25,7 +25,7 @@ export default function AuthGuard({ children, requiredRole, fallbackUrl }: AuthG
         if (!authenticated) {
           // Redirect to appropriate login page
           if (requiredRole === 'manager') {
-            router.push('/manager-login')
+            router.push('/login')
           } else {
             router.push('/login')
           }
