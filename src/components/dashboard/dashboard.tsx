@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { StatsOverview } from './stats-overview'
 import { SeverityDonut } from './severity-donut'
 import { AttackMap } from './attack-map'
+import { AlertsGraph } from './alerts-graph'
 
 export function Dashboard() {
   const [isClient, setIsClient] = useState(false)
@@ -50,9 +51,12 @@ export function Dashboard() {
         <AttackMap />
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-2 gap-8">
         <div className="card-gradient p-0 rounded-xl overflow-hidden">
           <SeverityDonut data={prepareSeverityData(statsData)} />
+        </div>
+        <div className="card-gradient p-0 h-[500px] rounded-xl">
+          <AlertsGraph />
         </div>
       </div>
     </div>

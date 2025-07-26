@@ -504,31 +504,8 @@ export function AttackMap() {
           ></svg>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mt-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-gray-700/30">
-            <div className="text-xs text-gray-400 mb-1">Monitored Regions</div>
-            <div className="text-2xl font-bold text-white">24</div>
-          </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-gray-700/30">
-            <div className="text-xs text-gray-400 mb-1">Security Zones</div>
-            <div className="text-2xl font-bold text-blue-500">
-              6
-            </div>
-          </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-gray-700/30">
-            <div className="text-xs text-gray-400 mb-1">Coverage</div>
-            <div className="text-2xl font-bold text-white">
-              92%
-            </div>
-          </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-gray-700/30">
-            <div className="text-xs text-gray-400 mb-1">Network Points</div>
-            <div className="text-2xl font-bold text-white">
-              187
-            </div>
-          </div>
-        </div>
+       
+        
       </div>
     </div>
   );
