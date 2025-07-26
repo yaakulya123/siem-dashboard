@@ -17,6 +17,8 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
     attackIndicators: '',
   });
 
+  const [showDetails, setShowDetails] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -39,8 +41,8 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
-      <div className="bg-[#111827] text-white p-6 rounded-lg w-full max-w-4xl relative overflow-y-auto max-h-[90vh]">
+    <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center p-4">
+      <div className="bg-[#111827] text-white p-6 rounded-lg w-full max-w-6xl relative overflow-y-auto max-h-[90vh] p-4">
         <button
           onClick={onClose}
           className="absolute top-3 right-4 text-gray-300 hover:text-white text-xl"
@@ -53,10 +55,10 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
         <div className="bg-[#1f2937] p-4 rounded-md mb-8">
           <div className="flex gap-4 mb-4">
             <button className="bg-blue-700 px-4 py-1 rounded text-sm">ID {alertId}</button>
-            <button className="bg-[#374151] px-4 py-1 rounded text-sm">ID 8814</button>
+            
           </div>
 
-          <table className="w-full text-sm text-left border border-gray-600 border-collapse">
+          <table className="w-full text-sm text-left border border-gray-600 border-collapse mb-2">
             <thead className="text-gray-400 bg-[#1f2937]">
               <tr>
                 <th className="pb-2 px-2 border border-gray-600">ID</th>
@@ -71,7 +73,7 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
               <tr>
                 <td className="pt-2 px-2 border border-gray-600">{alertId}</td>
                 <td className="px-2 border border-gray-600">Access to Blacklisted External URL Blocked by Firewall</td>
-                <td className="max-w-md px-2 border border-gray-600">
+                <td className="max-w-xl px-2 border border-gray-600">
                   This alert was triggered when a user attempted to access an external URL that is listed in the organization’s blacklist or threat intelligence feeds. The firewall or proxy successfully blocked the outbound request, preventing the connection. Note: The blacklist only covers known threats. It does not guarantee protection against new or unknown malicious domains.
                 </td>
                 <td className="px-2 border border-gray-600">Firewall</td>
@@ -81,7 +83,22 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
             </tbody>
           </table>
 
-          <div className="mt-2 text-sm text-blue-400 cursor-pointer">Alert details ▾</div>
+          <div
+            className="mt-2 text-sm text-blue-400 cursor-pointer select-none"
+            onClick={() => setShowDetails(!showDetails)}
+          >
+            Alert details {showDetails ? '▴' : '▾'}
+          </div>
+
+          {showDetails && (
+            <div className="mt-3 text-gray-300 text-sm bg-[#111827] p-3 rounded border border-gray-600">
+              <p><strong>Source:</strong> Internal Firewall Appliance</p>
+              <p><strong>Blocked URL:</strong> `http://malicious-phish-site.biz`</p>
+              <p><strong>IP:</strong> 203.0.113.45</p>
+              <p><strong>User:</strong> `johndoe@company.com`</p>
+              <p><strong>Policy Matched:</strong> “Outbound Traffic Filtering > Block External Threats”</p>
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -102,7 +119,7 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
               </label>
             </div>
 
-            <div className="bg-[#1f2937] p-4 rounded-md">
+            <div className="bg-[#1f2937] p-4 rounded-md grid grid-cols-1 gap-4">
               {[
                 { name: 'timeOfActivity', placeholder: 'Time of activity' },
                 { name: 'affectedEntities', placeholder: 'List of Affected Entities' },
@@ -117,8 +134,8 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
                   placeholder={placeholder}
                   value={(formData as any)[name]}
                   onChange={handleChange}
-                  className="w-full bg-[#111827] text-white border border-gray-600 rounded p-3 mb-2"
-                  rows={1}
+                  className="w-full bg-[#111827] text-white border border-gray-600 rounded p-3"
+                  rows={2}
                 />
               ))}
             </div>
@@ -127,13 +144,14 @@ export default function CreateTicketModal({ alertId, onClose }: CreateTicketModa
           <div className="text-right flex justify-end space-x-4">
             <button
               type="button"
-              className="bg-lime-500 hover:bg-lime-600 text-black font-semibold px-6 py-2 rounded"
+              onClick={() => alert("Report sent to email!")}
+              className="inline-flex ml-4 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
             >
               Send to email
             </button>
             <button
               type="submit"
-              className="bg-lime-500 hover:bg-lime-600 text-black font-semibold px-6 py-2 rounded"
+              className="ml-4 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
             >
               Submit and close alerts
             </button>
