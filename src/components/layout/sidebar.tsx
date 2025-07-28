@@ -20,8 +20,6 @@ const navigation = [
   { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
-  { name: 'NIST 800-53', href: '/nist', icon: ShieldCheckIcon, badge: null },
-  { name: 'CIS Benchmarks', href: '/cis', icon: ShieldCheckIcon, badge: null },
   { name: 'Agents Overview', href: '/users', icon: UsersIcon, badge: null },
   { name: 'SIEM Portal', href: '/siem', icon: CpuChipIcon, badge: null },
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, badge: null },
