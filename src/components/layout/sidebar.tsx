@@ -11,12 +11,14 @@ import {
   UsersIcon,
   CpuChipIcon,
   Cog6ToothIcon,
+  BuildingOfficeIcon,
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 import { SystemStatus } from './system-status'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
+  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, badge: null },
+  { name: 'Client Overview', href: '/overview', icon: BuildingOfficeIcon, badge: null },
   { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
   { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
