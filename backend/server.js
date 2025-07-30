@@ -469,7 +469,7 @@ app.get('/alerts', async (req, res) => {
         "full_log",
         "location"
       ],
-      size: 25
+      size: 500
     };
 
     const alertsResponse = await axiosInstance.post(
@@ -527,7 +527,7 @@ function refreshCachePeriodically(endpoint, interval) {
 // Setup automatic refreshes for all caches
 refreshCachePeriodically('/alerts', 10 * 1000);             // every 10 sec
 refreshCachePeriodically('/dashboard-metrics', 10 * 1000);  // every 10 sec
-refreshCachePeriodically('/agents-summary', 30 * 1000);     // every 30 sec
+refreshCachePeriodically('/agents-summary', 10 * 1000);     // every 10 sec
 
 
 

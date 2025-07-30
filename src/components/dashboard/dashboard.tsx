@@ -28,7 +28,7 @@ export function Dashboard() {
     }
 
     fetchStats() // initial fetch
-    const interval = setInterval(fetchStats, 10000) // fetch every 10s
+    const interval = setInterval(fetchStats, 5000) // fetch every 5s
 
     return () => clearInterval(interval) // cleanup
   }, [])
@@ -55,8 +55,11 @@ export function Dashboard() {
         <div className="card-gradient p-0 rounded-xl overflow-hidden">
           <SeverityDonut data={prepareSeverityData(statsData)} />
         </div>
-        <div className="card-gradient p-0 h-[500px] rounded-xl">
-          <AlertsGraph />
+        <div className="card-gradient p-0 rounded-xl">
+          {/* <AlertsGraph /> */}
+          {isClient && statsData && (<AlertsGraph data={statsData} />)}
+
+
         </div>
       </div>
     </div>

@@ -42,7 +42,8 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
       bgColor: 'bg-blue-100 dark:bg-blue-900/30',
       gradientFrom: 'from-blue-50 dark:from-blue-900/20',
       gradientTo: 'to-blue-100/50 dark:to-blue-800/10',
-      borderColor: 'border-blue-200/50 dark:border-blue-800/30'
+      borderColor: 'border-blue-200/50 dark:border-blue-800/30',
+      viewDetailsLink: '/alerts'
     },
     {
       name: 'Alerts Last 24h',
@@ -54,7 +55,8 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
       bgColor: 'bg-orange-100 dark:bg-orange-900/30',
       gradientFrom: 'from-orange-50 dark:from-orange-900/20',
       gradientTo: 'to-orange-100/50 dark:to-orange-800/10',
-      borderColor: 'border-orange-200/50 dark:border-orange-800/30'
+      borderColor: 'border-orange-200/50 dark:border-orange-800/30',
+      viewDetailsLink: '/alerts'
     },
     {
       name: 'Compliance Score',
@@ -66,7 +68,8 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
       bgColor: 'bg-purple-100 dark:bg-purple-900/30',
       gradientFrom: 'from-purple-50 dark:from-purple-900/20',
       gradientTo: 'to-purple-100/50 dark:to-purple-800/10',
-      borderColor: 'border-purple-200/50 dark:border-purple-800/30'
+      borderColor: 'border-purple-200/50 dark:border-purple-800/30',
+      viewDetailsLink: '/compliance'
     },
     {
       name: 'Active Agents',
@@ -78,7 +81,8 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
       bgColor: 'bg-green-100 dark:bg-green-900/30',
       gradientFrom: 'from-green-50 dark:from-green-900/20',
       gradientTo: 'to-green-100/50 dark:to-green-800/10',
-      borderColor: 'border-green-200/50 dark:border-green-800/30'
+      borderColor: 'border-green-200/50 dark:border-green-800/30',
+      viewDetailsLink: '/users'
     },
   ]
 
@@ -140,7 +144,7 @@ export const StatsOverview: FC<StatsOverviewProps> = ({ data }) => {
             </p>
             <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-r ${item.gradientFrom} ${item.gradientTo} px-5 py-3 sm:px-6 border-t ${item.borderColor}`}>
               <div className="text-sm">
-                <a href="#" className={`font-medium ${item.color} hover:opacity-80 flex items-center justify-between`}>
+                <a href={item.viewDetailsLink} className={`font-medium ${item.color} hover:opacity-80 flex items-center justify-between`}>
                   <span>View details</span>
                   <svg className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
