@@ -11,26 +11,36 @@ import {
   UsersIcon,
   CpuChipIcon,
   Cog6ToothIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 import { SystemStatus } from './system-status'
 
-const navigation = [
-  { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
-  { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
-  { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
-  { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
-  { name: 'Agents Overview', href: '/users', icon: UsersIcon, badge: null },
-  { name: 'SIEM Portal', href: '/siem', icon: CpuChipIcon, badge: null },
-  { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, badge: null },
-]
-
 export function Sidebar() {
   const pathname = usePathname()
+  const [userDropdownOpen, setUserDropdownOpen] = useState(
+    pathname.startsWith('/user')
+  )
+
+  const toggleUserDropdown = () => setUserDropdownOpen(!userDropdownOpen)
+
+  const navigation = [
+    { name: 'Dashboard', href: '/', icon: HomeIcon, badge: null },
+    { name: 'Live Alerts', href: '/alerts', icon: ExclamationTriangleIcon, badge: 12 },
+    { name: 'Reports', href: '/reports', icon: DocumentChartBarIcon, badge: null },
+    { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon, badge: null },
+    { name: 'Agents Overview', href: '/agents', icon: UsersIcon, badge: null },
+    { name: 'SIEM Portal', href: '/siem', icon: CpuChipIcon, badge: null },
+    { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, badge: null },
+  ]
+
+  const isUserPath = pathname.startsWith('/user')
 
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-6 pb-4 shadow-xl border-r border-gray-200/70 dark:border-gray-800/50">
+
         {/* Logo */}
         <div className="flex h-16 shrink-0 items-center">
           <div className="flex items-center space-x-3">
@@ -68,7 +78,7 @@ export function Sidebar() {
                       >
                         <item.icon
                           className={clsx(
-                            'h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110',
+                            'h-5 w-5 shrink-0 group-hover:scale-110',
                             isActive
                               ? 'text-blue-600 dark:text-blue-400'
                               : 'text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'
@@ -84,10 +94,71 @@ export function Sidebar() {
                     </li>
                   )
                 })}
+
+                {/* Users Dropdown */}
+                <li>
+                  <button
+                    type="button"
+                    onClick={toggleUserDropdown}
+                    className={clsx(
+                      'w-full flex items-center gap-x-3 p-2.5 text-sm font-medium rounded-xl',
+                      isUserPath
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/30'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    )}
+                  >
+                    <UsersIcon
+                      className={clsx(
+                        'h-5 w-5 shrink-0',
+                        isUserPath
+                          ? 'text-blue-600 dark:text-blue-400'
+                          : 'text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                      )}
+                    />
+                    User
+                    {userDropdownOpen ? (
+                      <ChevronDownIcon className="h-4 w-4 ml-auto text-gray-400" />
+                    ) : (
+                      <ChevronRightIcon className="h-4 w-4 ml-auto text-gray-400" />
+                    )}
+                  </button>
+
+                  {userDropdownOpen && (
+                    <ul className="ml-9 mt-1 space-y-1">
+                      <li>
+                        <Link
+                          href="/user/list"
+                          className={clsx(
+                            'block text-sm font-medium rounded-md px-2 py-1',
+                            pathname === '/user/list'
+                              ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                              : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                          )}
+                        >
+                          User List
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/user/add"
+                          className={clsx(
+                            'block text-sm font-medium rounded-md px-2 py-1',
+                            pathname === '/user/add'
+                              ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                              : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                          )}
+                        >
+                          Add User
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
               </ul>
             </li>
 
-            {/* Status indicators */}
+            {/* System Status */}
             <li className="mt-auto">
               <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-100 dark:border-gray-700/30 shadow-sm">
                 <SystemStatus />
@@ -98,4 +169,4 @@ export function Sidebar() {
       </div>
     </div>
   )
-} 
+}
